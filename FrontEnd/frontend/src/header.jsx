@@ -6,7 +6,7 @@ const header = () => {
     <div>
       
 
-<nav className="bg-blue-900 text-white px-2 py-2.5 sm:px-4 w-full">
+<nav className="bg-blue-900 text-white px-2 py-2 sm:px-4 w-full">
     <div className="container mx-auto flex flex-wrap items-center justify-between">
       <a href="/" className="flex items-center block text-white pr-4 md:font-black">
         BIT PROJECT TRACKER

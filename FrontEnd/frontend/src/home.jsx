@@ -1,13 +1,18 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import Header from './header';
+import Footer from './footer';
 
 const Home = () => {
   const navigate = useNavigate()
 
   return (
+    <div>
+    <Header/>
     <div className="flex flex-col items-center justify-center min-h-screen">
+      
       <h1 className="text-3xl font-bold mb-6">
-        Laravel 11 React Authentication
+        Bitmap Project Tracker
       </h1>
 
       <div className="flex gap-4">
@@ -26,6 +31,10 @@ const Home = () => {
         </button>
       </div>
     </div>
+
+    <Footer/>
+    </div>
+
   )
 }
 

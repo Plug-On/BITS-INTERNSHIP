@@ -4,6 +4,7 @@ import Login from './login';
 import Register from './register';
 import Dashboard from './dashboard';
 import Header from './header';
+import Footer from './footer';
 // import Sidebar from '../common/Sidebar';
 
 const RouterComponent = () =>{
@@ -15,6 +16,8 @@ const RouterComponent = () =>{
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
+            <Route path="/footer" element={<Footer/>}/>
+
             {/* <Route path="/sidebar" element={<Sidebar/>}/> */}
         </Routes>
     );

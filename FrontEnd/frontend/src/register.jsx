@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Header from "./header";
+import Footer from "./footer";
+
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -35,6 +38,7 @@ const Register = () => {
   };
 
   return (
+    <div> <Header/>
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow p-6">
         <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
@@ -89,6 +93,9 @@ const Register = () => {
           <div className="mt-4 text-green-600 text-sm text-center">{success}</div>
         )}
       </div>
+    </div>
+
+    <Footer/>
     </div>
   );
 };
