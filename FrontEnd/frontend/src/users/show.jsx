@@ -1,19 +1,9 @@
+import React from 'react'
+import Sidebar from "../components/Sidebar";
+import Header from '../header';
+import Footer from '../footer';
 
-import Header from "./header";
-import Sidebar from "./components/Sidebar";
-import Footer from "./footer";
-
-/*
-  Updated Dashboard layout:
-  - Header at top (keeps your existing Header import)
-  - Left Sidebar (new Sidebar component)
-  - Right main content area with the same auth / axios logic you already had
-  - Tailwind based dark UI
-*/
-
-const Dashboard = () => {
-  
-
+const users = () => {
   return (
     <div> <Header/>
 
@@ -28,7 +18,7 @@ const Dashboard = () => {
         <div className="flex-1 overflow-auto bg-gray-900 p-6">
             <div className="bg-gray-800 rounded shadow p-6 min-h-[80vh]">
                 <h2 className="text-2xl text-white font-semibold mb-4">
-                  Dashboard
+                  Add Users
                 </h2>
 
                 <p className="text-white">
@@ -40,7 +30,7 @@ const Dashboard = () => {
     <Footer/>
     </div>
     
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default users

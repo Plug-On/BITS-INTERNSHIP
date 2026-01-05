@@ -1,7 +1,8 @@
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import companies from "../companies/show";
 
 /*
   Simple Sidebar component (Tailwind).
@@ -122,11 +123,15 @@ const [user, setUser] = useState(null);
 
       {/* Nav */}
       <nav className="px-2 py-3 " role="navigation" aria-label="Main navigation">
-        <NavItem>Dashboard</NavItem>
-        <NavItem >Users</NavItem>
-        <NavItem>Customer</NavItem>
-        <NavItem>Broadcasts</NavItem>
-        <NavItem>Settings</NavItem>
+        {/* <NavItem>Dashboard</NavItem> */}
+        <div className="font-bold mx-4"><Link to = "../dashboard">Dashboard</Link></div>
+        {/* <NavItem >Users</NavItem> */}
+        <div className="font-bold mx-4 mt-3"><Link to = "../Users">Users</Link></div>
+        <div className="font-bold mx-4 mt-3"><Link to = "../companies/show">Companies</Link></div>
+        <div className="font-bold mx-4 mt-3"><Link to = "#">Documents</Link></div>
+        <div className="font-bold mx-4 mt-3"><Link to = "#">Settings</Link></div>
+        {/* <NavItem>Broadcasts</NavItem>
+        <NavItem>Settings</NavItem> */}
       </nav>
 
       <div className="border-t border-gray-800 mt-3"></div>
