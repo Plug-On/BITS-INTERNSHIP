@@ -10,6 +10,9 @@ import Users from './users/show';
 import Show from './companies/show';
 import Create from './companies/create';
 import Edit from './companies/edit';
+import UShow from './users/show';
+import UEdit from './users/edit';
+import UCreate from './users/create';
 // import Sidebar from '../common/Sidebar';
 
 const RouterComponent = () =>{
@@ -23,11 +26,14 @@ const RouterComponent = () =>{
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/footer" element={<Footer/>}/>
             <Route path="/users" element={<Users/>}/>
+
             <Route path="/companies/show" element={<Show/>}/>
             <Route path="/companies/create" element={<Create/>}/>
             <Route path="/companies/edit" element={<Edit/>}/>
 
-
+            <Route path="/users/show" element={<UShow/>}/>
+            <Route path="/users/create" element={<UCreate/>}/>
+            <Route path="/users/edit" element={<UEdit/>}/>
 
 
 

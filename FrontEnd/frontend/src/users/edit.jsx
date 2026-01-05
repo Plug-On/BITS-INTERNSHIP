@@ -1,12 +1,73 @@
-import React from 'react';
+
+import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../header';
 import Footer from '../footer';
-import { Link } from 'react-router-dom';
 
-const Create = () => {
+// import { useState } from 'react';
+
+
+const edit = () => {
+  // const [disable, setDisable] = useState(false);
+  // const [brand, setBrand] = useState([]);
+  // const navigate = useNavigate();
+  // const params = useParams();
+
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { errors },
+  // } = useForm({
+  //   defaultValues: async () => {
+  //     const res = await fetch(`${apiUrl}/brands/${params.id}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         'Accept': 'application/json',
+  //         'Authorization': `Bearer ${adminToken()}`,
+  //       },
+  //     })
+  //       .then(res => res.json())
+  //       .then(result => {
+  //         if (result.status === 200) {
+  //           setBrand(result.data);
+  //           reset({
+  //             name: result.data.name,
+  //             status: result.data.status,
+  //           });
+  //         } else {
+  //           console.log("Something went wrong");
+  //         }
+  //       });
+  //   },
+  // });
+
+  // const saveBrand = async (data) => {
+  //   setDisable(true);
+  //   const res = await fetch(`${apiUrl}/brands/${params.id}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //       'Accept': 'application/json',
+  //       'Authorization': `Bearer ${adminToken()}`,
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then(res => res.json())
+  //     .then(result => {
+  //       setDisable(false);
+  //       if (result.status === 200) {
+  //         toast.success(result.message);
+  //         navigate('/admin/brands');
+  //       } else {
+  //         console.log("Something went wrong");
+  //       }
+  //     });
+  // };
+
   return (
-    <div className="min-h-screen flex flex-col">
+     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <Header />
 
@@ -17,7 +78,7 @@ const Create = () => {
         </div>
 
 
-      <div className="flex-1 overflow-auto bg-gray-900 p-6">
+        <div className="flex-1 overflow-auto bg-gray-900 p-6">
                     {/* <div className="bg-gray-800 rounded shadow p-6 min-h-[80vh]">
                         <h2 className="text-2xl text-white font-semibold mb-4">
                           Add company
@@ -30,9 +91,8 @@ const Create = () => {
         
         
                 <div className="flex items-center justify-between mb-4">
-              
-        
-                <Link to="../companies/show">
+                
+                <Link to="../users/show">
                     <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
                        BACK
                   </button>
@@ -41,14 +101,11 @@ const Create = () => {
         
               </div>
 
-
-
-
-        {/* Main Content */}
-        <div className="flex-1 overflow-auto bg-gray-800 p-6">
+          {/* Form */}
+          <div className="flex-1 overflow-auto bg-gray-800 p-6">
           <div className="w-full bg-gray-900 rounded-lg shadow-md p-6">
 
-            <h2 className="text-2xl font-semibold text-white mb-6">Create Companies</h2>
+            <h2 className="text-2xl font-semibold text-white mb-6">Edit Users</h2>
 
             {/* Name */}
             <div className="mb-4">
@@ -87,23 +144,21 @@ const Create = () => {
             </div>
 
             {/* Submit Button */}
-            <Link to="../companies/show">
-                <button type="button"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition">
-                Create
-                </button>
+            <Link to="../users/show">
+            <button
+              type="button"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition"
+            >
+              Update
+            </button>
             </Link>
-
           </div>
         </div>
+        </div>
       </div>
-      </div>
-
-      {/* Footer */}
-      <Footer />
+          <Footer/>
     </div>
-    
   );
 };
 
-export default Create;
+export default edit;

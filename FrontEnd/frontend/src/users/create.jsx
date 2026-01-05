@@ -32,7 +32,7 @@ const Create = () => {
                 <div className="flex items-center justify-between mb-4">
               
         
-                <Link to="../companies/show">
+                <Link to="../users/show">
                     <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
                        BACK
                   </button>
@@ -48,7 +48,7 @@ const Create = () => {
         <div className="flex-1 overflow-auto bg-gray-800 p-6">
           <div className="w-full bg-gray-900 rounded-lg shadow-md p-6">
 
-            <h2 className="text-2xl font-semibold text-white mb-6">Create Companies</h2>
+            <h2 className="text-2xl font-semibold text-white mb-6">Create User</h2>
 
             {/* Name */}
             <div className="mb-4">
@@ -87,7 +87,7 @@ const Create = () => {
             </div>
 
             {/* Submit Button */}
-            <Link to="../companies/show">
+            <Link to="../users/show">
                 <button type="button"
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition">
                 Create

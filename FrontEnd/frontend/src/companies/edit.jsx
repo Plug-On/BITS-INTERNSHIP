@@ -91,10 +91,7 @@ const edit = () => {
         
         
                 <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                  Edit
-                </h2>
-        
+                
                 <Link to="../companies/show">
                     <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
                        BACK
@@ -108,7 +105,7 @@ const edit = () => {
           <div className="flex-1 overflow-auto bg-gray-800 p-6">
           <div className="w-full bg-gray-900 rounded-lg shadow-md p-6">
 
-            <h2 className="text-2xl font-semibold text-white mb-6">Create User</h2>
+            <h2 className="text-2xl font-semibold text-white mb-6">Edit Companies</h2>
 
             {/* Name */}
             <div className="mb-4">
