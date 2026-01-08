@@ -1,10 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Sidebar from "../components/Sidebar";
 import Header from '../header';
 import Footer from '../footer';
 import { Link, Links } from 'react-router-dom';
+import { getUsers } from "../services/userService";
+import axios from 'axios';
 
-const users = () => {
+const Users = () => {
+
+ const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    getUsers()
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  const handleDelete = (id)=>{
+    if(confirm("Are you sure you want to delete?")){
+       axios.delete(`http://localhost:8000/api/users/${id}`).then(() => {
+        setUsers(users.filter(u => u.id !== id));
+       });
+    };
+  };
+  
   return (
      <div> <Header/>
 
@@ -17,16 +36,6 @@ const users = () => {
 
       {/* RIGHT SIDE – Content */}
         <div className="flex-1 overflow-auto bg-gray-900 p-6">
-            {/* <div className="bg-gray-800 rounded shadow p-6 min-h-[80vh]">
-                <h2 className="text-2xl text-white font-semibold mb-4">
-                  Add company
-                </h2>
-
-                <p className="text-white">
-                  Your main page content goes here.
-                </p>
-            </div> */}
-
 
         <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
@@ -47,13 +56,16 @@ const users = () => {
         <thead>
           <tr className="bg-gray-100 dark:bg-gray-800 text-left">
             <th className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-16">
+              ID
+            </th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
               Name
             </th>
             <th className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
               Email
             </th>
             <th className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-24">
-              Status
+              Role
             </th>
             <th className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-28">
               Action
@@ -62,45 +74,38 @@ const users = () => {
         </thead>
 
         <tbody>
+          {users.map((user) =>
           <tr className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-            <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">1</td>
+            <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.id}</td>
             <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-              Nike
+              {user.name}
+            </td>
+            <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+              {user.email}
             </td>
             <td className="px-4 py-3">
               <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
-                Active
+                User
               </span>
             </td>
             <td className="px-4 py-3 flex gap-3">
-              <span className="text-blue-600 hover:underline cursor-pointer">
-               <Link to ="/users/edit">Edit</Link> 
+              <span className="text-blue-600 font-bold hover:scale-105 hover:underline cursor-pointer">
+               <Link to ={`/users/edit/${user.id}`}>Edit</Link> 
               </span>
               <span className="text-red-600 hover:underline cursor-pointer">
-                Delete
-              </span>
-            </td>
-          </tr>
+                <button
+                  onClick={() => handleDelete(user.id)}
+                  className="text-red-600 font-bold hover:scale-105 hover:underline cursor-pointer"
+                >
+                  Delete
+                </button>
 
-          <tr className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-            <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">2</td>
-            <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-              Adidas
-            </td>
-            <td className="px-4 py-3">
-              <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">
-                Block
-              </span>
-            </td>
-            <td className="px-4 py-3 flex gap-3">
-              <span className="text-blue-600 hover:underline cursor-pointer">
-                Edit
-              </span>
-              <span className="text-red-600 hover:underline cursor-pointer">
-                Delete
               </span>
             </td>
           </tr>
+           )}
+
+        
         </tbody>
       </table>
     
@@ -116,4 +121,4 @@ const users = () => {
   )
 }
 
-export default users;
+export default Users;

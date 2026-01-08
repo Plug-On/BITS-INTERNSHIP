@@ -33,7 +33,7 @@ const RouterComponent = () =>{
 
             <Route path="/users/show" element={<UShow/>}/>
             <Route path="/users/create" element={<UCreate/>}/>
-            <Route path="/users/edit" element={<UEdit/>}/>
+            <Route path="/users/edit/:id" element={<UEdit/>}/>
 
 
 
