@@ -1,6 +1,6 @@
 
 # Project Tracker
-This is Project Tracker , a project management website with sprinkle of CRM(Customer Relationship Management) and HRM(Human Resource Management)  where you can keep track of your client. It is a web-based project tracker designed to manage companies, users, and hosting/domain details efficiently. Built with Laravel (backend), React (frontend), and TailwindCSS (UI).
+This is Project Tracker , a project management website with sprinkle of CRM(Customer Relationship Management) and HRM(Human Resource Management)  where you can keep track of your client. It is a web-based project tracker designed to manage companies, users and hosting/domain details efficiently. Built with Laravel (backend), React (frontend) and TailwindCSS (UI).
 
 This is internship project done by Niraj G.C. & Pradip Kr. Jaysawal for their BCA 7th semester.
 
@@ -144,6 +144,8 @@ Laravel backend: http://127.0.0.1:8000
 React frontend (Vite dev server): usually http://localhost:5173
 
 
+## Project Status
+🚧 Work in Progress – The project is under active development. Features may change and some functionality may be incomplete.
 
 
 ## Authors
