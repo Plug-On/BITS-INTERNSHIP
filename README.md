@@ -6,7 +6,7 @@ This is internship project done by Niraj G.C. & Pradip Kr. Jaysawal for their BC
 
 ## Technology Used
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
-![Laravel](https://img.shields.io/badge/Laravel-FF2D20?logo=laravel&logoColor=white)
+![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
@@ -161,4 +161,7 @@ React frontend (Vite dev server): usually http://localhost:5173
 
 - [@NirajG.C.]https://github.com/Plug-On/)
 - [@PradipJaysawal]https://github.com/PradipJaysawal/)
+
+
+
 
