@@ -159,6 +159,6 @@ React frontend (Vite dev server): usually http://localhost:5173
 
 ## Authors
 
-- [@Plug-on]https://github.com/Plug-On/)
+- [@NirajG.C.]https://github.com/Plug-On/)
 - [@PradipJaysawal]https://github.com/PradipJaysawal/)
 
