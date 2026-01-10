@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\ManageUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,8 @@ Route::post('/logout', [UsersController::class, 'logout']);
 //For user management in dashboard (create , show , edit & delete)
 Route::resource("users", ManageUserController::class);
 
+
+Route::resource("companies",CompaniesController::class);
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
