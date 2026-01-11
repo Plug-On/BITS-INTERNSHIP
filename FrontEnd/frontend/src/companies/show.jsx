@@ -3,30 +3,42 @@ import Sidebar from "../components/Sidebar";
 import Header from "../header";
 import Footer from "../footer";
 import { Link } from "react-router-dom";
+import { getCompanies } from "../services/userService";
+import { useEffect, useState } from 'react';
+import { Axios } from "axios";
+
 
 // Sample dummy data
-const companiesData = [
-  {
-    id: 1,
-    name: "Nike",
-    status: "Active",
-    hosting: "AWS",
-    domain: "nike.com",
-    personalName: "John Doe",
-    personalPhone: "9876543210",
-  },
-  {
-    id: 2,
-    name: "Adidas",
-    status: "Inactive",
-    hosting: "Google Cloud",
-    domain: "adidas.com",
-    personalName: "Jane Smith",
-    personalPhone: "9876501234",
-  },
-];
+// const companiesData = [
+//   {
+//     id: 1,
+//     name: "Nike",
+//     status: "Active",
+//     hosting: "AWS",
+//     domain: "nike.com",
+//     personalName: "John Doe",
+//     personalPhone: "9876543210",
+//   },
+//   {
+//     id: 2,
+//     name: "Adidas",
+//     status: "Inactive",
+//     hosting: "Google Cloud",
+//     domain: "adidas.com",
+//     personalName: "Jane Smith",
+//     personalPhone: "9876501234",
+//   },
+// ];
 
 const Show = () => {
+
+   const [companies, setCompanies] = useState([]);
+  
+    useEffect(() => {
+      getCompanies()
+        .then((res) => setCompanies(res.data))
+        .catch((err) => console.error(err));
+    }, []);
   return (
     <div>
       <Header />
@@ -63,7 +75,8 @@ const Show = () => {
             </thead>
 
             <tbody>
-              {companiesData.map((company) => (
+               {companies?.length > 0 ? (
+              companies.map((company) => (
                 <tr key={company.id} className="border-b hover:bg-gray-700">
                   <td className="px-4 py-3 text-white text-sm text-gray-700">{company.id}</td>
                   <td className="px-4 py-3 text-white text-sm text-gray-700">{company.name}</td>
@@ -81,7 +94,7 @@ const Show = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-white text-sm text-gray-700">
-                    {company.personalName} ({company.personalPhone})
+                    {company.p_name} ({company.p_phone})
                   </td>
                   <td className="px-4 py-3 flex gap-3">
                     <Link to="/companies/edit" className="text-blue-600 font-bold hover:scale-105 hover:text-blue-400 hover:underline cursor-pointer">
@@ -90,7 +103,15 @@ const Show = () => {
                     <span className="text-red-600 font-bold hover:scale-105 hover:text-red-400 hover:underline cursor-pointer">Delete</span>
                   </td>
                 </tr>
-              ))}
+                ))
+               ) : (
+    <tr>
+      <td colSpan="7" className="text-center text-gray-400 py-6">
+        No companies found
+      </td>
+    </tr>
+            
+            )}
             </tbody>
           </table>
         </div>

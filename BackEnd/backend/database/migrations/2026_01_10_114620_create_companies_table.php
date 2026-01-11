@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -14,31 +13,44 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+
+            // Company Info
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('address')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->enum('hosting', ['shared', 'single'])->nullable();
+            $table->text('address')->nullable();
+            $table->enum('status', ['Active', 'Inactive', 'Expired'])->default('Active');
+
+            // Hosting Info
+            $table->string('hosting')->nullable();
             $table->string('hosting_plan')->nullable();
             $table->string('hosting_company')->nullable();
-            $table->string('hosting_plan_start')->nullable();
-            $table->string('hosting_expiry')->nullable();
+            $table->date('hosting_plan_start')->nullable();
+            $table->date('hosting_expiry')->nullable();
+            $table->decimal('hosting_charge', 10, 2)->nullable();
+            $table->decimal('hosting_renew_charge', 10, 2)->nullable();
+
+            // Domain Info
             $table->string('domain')->nullable();
             $table->string('domain_company')->nullable();
-            $table->string('domain_plan_start')->nullable();
-            $table->string('domain_expiry')->nullable();
+            $table->date('domain_plan_start')->nullable();
+            $table->date('domain_expiry')->nullable();
+            $table->decimal('domain_charge', 10, 2)->nullable();
+            $table->decimal('domain_renew_charge', 10, 2)->nullable();
+
+            // Maintenance
+            $table->decimal('maintenance_charge', 10, 2)->nullable();
+
+            // Documents (store file paths)
             $table->string('registration_document')->nullable();
             $table->string('pan_document')->nullable();
             $table->string('letter')->nullable();
             $table->string('logo')->nullable();
-            $table->double('hosting_charge')->nullable();
-            $table->double('domain_charge')->nullable();
-            $table->double( 'maintenance_charge')->nullable();
-            $table->double('hosting_renew_charge')->nullable();
-            $table->double('domain_renew_charge')->nullable();
-            $table->enum('status', ['active' , 'inactive'])->default('active');
+
+            // Personal Contact
             $table->string('p_name')->nullable();
             $table->string('p_phone')->nullable();
+
             $table->timestamps();
         });
     }

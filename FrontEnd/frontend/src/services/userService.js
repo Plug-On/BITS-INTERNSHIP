@@ -10,3 +10,7 @@ export const createUser = (data) => {
   return axios.post(`${APP_URL}/users` ,data);
 };
 
+export const getCompanies = () => {
+  return axios.get(`${APP_URL}/companies`);
+};
+
