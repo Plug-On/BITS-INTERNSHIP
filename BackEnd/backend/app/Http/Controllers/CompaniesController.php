@@ -54,9 +54,12 @@ class CompaniesController extends Controller
         ]);
 
         // Auto-calculate status
-        $status = ($request->hosting_expiry && Carbon::parse($request->hosting_expiry)->isPast())
-                  ? 'Inactive'
-                  : 'Active';
+        $status = $request->filled('status')
+                ? $request->status
+                : (($request->hosting_expiry && Carbon::parse($request->hosting_expiry)->isPast())
+                    ? 'Inactive'
+                    : 'Active');
+
 
         // Handle file uploads
         $files = ['registration_document', 'pan_document', 'letter', 'logo'];
@@ -124,9 +127,12 @@ class CompaniesController extends Controller
         ]);
 
         // Auto status
-        $status = ($request->hosting_expiry && Carbon::parse($request->hosting_expiry)->isPast())
-                  ? 'Inactive'
-                  : 'Active';
+        $status = $request->filled('status')
+            ? $request->status
+            : (($request->hosting_expiry && Carbon::parse($request->hosting_expiry)->isPast())
+                ? 'Inactive'
+                : 'Active');
+
 
         // Handle files
         $files = ['registration_document', 'pan_document', 'letter', 'logo'];

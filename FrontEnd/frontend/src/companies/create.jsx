@@ -3,8 +3,10 @@ import Sidebar from "../components/Sidebar";
 import Header from "../header";
 import Footer from "../footer";
 import axios from "axios";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Create = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -64,6 +66,7 @@ const Create = () => {
       });
       console.log("Company created:", res.data);
       alert("Company created successfully!");
+      navigate ('../companies/show');
       setFormData({
         name: "",
         email: "",
@@ -111,6 +114,11 @@ const Create = () => {
           <h2 className="text-2xl font-semibold text-white mb-6">
             Company Plans Creation
           </h2>
+                <Link to="../companies/show">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md mb-6">
+                       BACK
+                  </button>
+                </Link>
 
           <form onSubmit={handleSubmit} className="bg-gray-900 rounded-lg shadow-md p-6">
             {/* Company Info */}

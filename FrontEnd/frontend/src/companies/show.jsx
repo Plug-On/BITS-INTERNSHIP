@@ -5,30 +5,8 @@ import Footer from "../footer";
 import { Link } from "react-router-dom";
 import { getCompanies } from "../services/userService";
 import { useEffect, useState } from 'react';
-import { Axios } from "axios";
+import axios, { Axios } from "axios";
 
-
-// Sample dummy data
-// const companiesData = [
-//   {
-//     id: 1,
-//     name: "Nike",
-//     status: "Active",
-//     hosting: "AWS",
-//     domain: "nike.com",
-//     personalName: "John Doe",
-//     personalPhone: "9876543210",
-//   },
-//   {
-//     id: 2,
-//     name: "Adidas",
-//     status: "Inactive",
-//     hosting: "Google Cloud",
-//     domain: "adidas.com",
-//     personalName: "Jane Smith",
-//     personalPhone: "9876501234",
-//   },
-// ];
 
 const Show = () => {
 
@@ -39,6 +17,16 @@ const Show = () => {
         .then((res) => setCompanies(res.data))
         .catch((err) => console.error(err));
     }, []);
+
+    const handleDelete = (id)=>{
+    if(confirm("Are you sure you want to delete?")){
+       axios.delete(`http://localhost:8000/api/companies/${id}`).then(() => {
+        setCompanies(companies.filter(u => u.id !== id));
+       });
+    };
+  };
+
+
   return (
     <div>
       <Header />
@@ -97,10 +85,17 @@ const Show = () => {
                     {company.p_name} ({company.p_phone})
                   </td>
                   <td className="px-4 py-3 flex gap-3">
-                    <Link to="/companies/edit" className="text-blue-600 font-bold hover:scale-105 hover:text-blue-400 hover:underline cursor-pointer">
+                    <Link to={`/companies/edit/${company.id}`} className="text-blue-600 font-bold hover:scale-105 hover:text-blue-400 hover:underline cursor-pointer">
                       Edit
                     </Link>
-                    <span className="text-red-600 font-bold hover:scale-105 hover:text-red-400 hover:underline cursor-pointer">Delete</span>
+                    <span className="text-red-600 hover:underline cursor-pointer">
+                <button
+                  onClick={() => handleDelete(company.id)}
+                  className="text-red-600 font-bold hover:scale-105 hover:underline cursor-pointer"
+                >
+                  Delete
+                </button>
+              </span>
                   </td>
                 </tr>
                 ))

@@ -29,7 +29,7 @@ const RouterComponent = () =>{
 
             <Route path="/companies/show" element={<Show/>}/>
             <Route path="/companies/create" element={<Create/>}/>
-            <Route path="/companies/edit" element={<Edit/>}/>
+            <Route path="/companies/edit/:id" element={<Edit/>}/>
 
             <Route path="/users/show" element={<UShow/>}/>
             <Route path="/users/create" element={<UCreate/>}/>
