@@ -8,6 +8,7 @@ import Footer from './footer';
 import Companies from './companies/show';
 import Users from './users/show';
 import Show from './companies/show';
+import Detail from './companies/detail';
 import Create from './companies/create';
 import Edit from './companies/edit';
 import UShow from './users/show';
@@ -30,10 +31,13 @@ const RouterComponent = () =>{
             <Route path="/companies/show" element={<Show/>}/>
             <Route path="/companies/create" element={<Create/>}/>
             <Route path="/companies/edit/:id" element={<Edit/>}/>
+            <Route path="/companies/detail/:id" element={<Detail />} />
+
 
             <Route path="/users/show" element={<UShow/>}/>
             <Route path="/users/create" element={<UCreate/>}/>
             <Route path="/users/edit/:id" element={<UEdit/>}/>
+            
 
 
 

@@ -85,6 +85,12 @@ const Show = () => {
                     {company.p_name} ({company.p_phone})
                   </td>
                   <td className="px-4 py-3 flex gap-3">
+                    <Link
+                        to={`/companies/detail/${company.id}`}
+                        className="text-green-600 font-bold hover:scale-105 hover:text-green-400 hover:underline cursor-pointer"
+                      >
+                        View
+                      </Link>
                     <Link to={`/companies/edit/${company.id}`} className="text-blue-600 font-bold hover:scale-105 hover:text-blue-400 hover:underline cursor-pointer">
                       Edit
                     </Link>
