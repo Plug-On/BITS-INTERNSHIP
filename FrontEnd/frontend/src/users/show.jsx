@@ -84,9 +84,16 @@ const Users = () => {
               {user.email}
             </td>
             <td className="px-4 py-3">
-              <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
-                User
+              <span
+                  className={`inline-flex px-2 py-1 text-xs font-medium rounded-full
+                    ${user.role === 'admin' ? 'bg-red-100 text-red-700' : ''}
+                    ${user.role === 'employee' ? 'bg-yellow-100 text-yellow-700' : ''}
+                    ${user.role === 'customer' ? 'bg-green-100 text-green-700' : ''}
+                  `}
+                >
+                  {user.role}
               </span>
+
             </td>
             <td className="px-4 py-3 flex gap-3">
               <span className="text-blue-600 font-bold hover:scale-105 hover:underline cursor-pointer">

@@ -12,7 +12,7 @@ class ManageUserController extends Controller
      */
     public function index()
     {
-        $users=User::select(["id", "name","email"])->get();
+        $users=User::select(["id", "name","email","role"])->get();
         return response()->json($users);
     }
 
@@ -32,12 +32,15 @@ class ManageUserController extends Controller
     $user = User::create([
         "name" => $request->name,
         "email" => $request->email,
-        "password" => bcrypt($request->password)
+        "password" => bcrypt($request->password),
+        "role" => $request->role ?? 'customer'
     ]);
 
     return response()->json([
+        "id" =>$user->id,
         "name" => $user->name,
         "email" => $user->email,
+        "role" => $user->role
     ]);
 }
 
@@ -45,12 +48,15 @@ class ManageUserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $users =User::find($id);
-        return response()->json([ "name"=>$users->name, "email"=>$users->email, "password"=>$users->password]);
+        public function show(string $id)
+{
+    $user = User::select('id','name','email','role')->findOrFail($id);
 
-    }
+    return response()->json($user);
+}
+
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -63,14 +69,18 @@ class ManageUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+public function update(Request $request, string $id)
 {
     $user = User::findOrFail($id);
 
     $user->name = $request->name;
     $user->email = $request->email;
+    $user->role = $request->role ?? $user->role;
 
-    // Only update password if provided
+    if ($request->filled('role')) {
+        $user->role = $request->role;
+    }
+
     if ($request->filled('password')) {
         $user->password = bcrypt($request->password);
     }
@@ -78,10 +88,13 @@ class ManageUserController extends Controller
     $user->save();
 
     return response()->json([
+        "id" => $user->id,
         "name" => $user->name,
         "email" => $user->email,
+        "role" => $user->role
     ]);
 }
+
 
 
     /**

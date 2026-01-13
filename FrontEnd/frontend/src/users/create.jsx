@@ -9,6 +9,7 @@ const Create = () => {
 
     const[name, setName] = useState('');
     const[email, setEmail] = useState('');
+    const [role, setRole] = useState("customer");
     const[password, setPassword] = useState('');
      const [error, setError] = useState("");
       const [success, setSuccess] = useState("");
@@ -18,9 +19,10 @@ const Create = () => {
       e.preventDefault();
       
       const data = {
-        name: name,
-        email: email,
-        password:password,
+        name,
+        email,
+        password,
+        role
       }
 
       try {
@@ -117,6 +119,23 @@ const Create = () => {
                 className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
+            {/* Role */}
+            <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Role
+                    </label>
+                    <select
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="admin">Admin</option>
+                      <option value="employee">Employee</option>
+                      <option value="customer">Customer</option>
+                    </select>
+            </div>
+
 
             {/* Password */}
             <div className="mb-6">
