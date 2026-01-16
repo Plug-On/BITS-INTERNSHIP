@@ -128,7 +128,7 @@ const [user, setUser] = useState(null);
         {/* <NavItem >Users</NavItem> */}
         <div className="font-bold mx-4 mt-3"><Link to = "../users/show">Users</Link></div>
         <div className="font-bold mx-4 mt-3"><Link to = "../companies/show">Companies</Link></div>
-        <div className="font-bold mx-4 mt-3"><Link to = "#">Documents</Link></div>
+        <div className="font-bold mx-4 mt-3"><Link to = "#">Tickets</Link></div>
         <div className="font-bold mx-4 mt-3"><Link to = "#">Settings</Link></div>
         {/* <NavItem>Broadcasts</NavItem>
         <NavItem>Settings</NavItem> */}
