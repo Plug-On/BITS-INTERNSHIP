@@ -74,9 +74,20 @@ const Edit = () => {
 
     const data = new FormData();
 
-    Object.keys(formData).forEach((key) => {
-      data.append(key, formData[key]);
-    });
+const fileFields = [
+  "registration_document",
+  "pan_document",
+  "letter",
+  "logo",
+];
+
+Object.keys(formData).forEach((key) => {
+  if (!fileFields.includes(key) && formData[key] !== "") {
+    data.append(key, formData[key]);
+  }
+});
+
+
 
     Object.keys(files).forEach((key) => {
       if (files[key]) data.append(key, files[key]);
@@ -101,7 +112,7 @@ const Edit = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-900">
+    <div className="min-h-screen flex bg-gray-900 text-white">
       <div className="w-64">
         <Sidebar />
       </div>
@@ -158,11 +169,40 @@ const Edit = () => {
           </Section>
 
           <Section title="Documents">
-            <FileInput label="Registration Document" name="registration_document" onChange={handleFileChange} errors={errors} />
-            <FileInput label="PAN Document" name="pan_document" onChange={handleFileChange} errors={errors} />
-            <FileInput label="Letter" name="letter" onChange={handleFileChange} errors={errors} />
-            <FileInput label="Company Logo" name="logo" onChange={handleFileChange} errors={errors} />
+                <DocumentCard
+                  label="Registration Document"
+                  name="registration_document"
+                  currentFile={formData.registration_document}
+                  onChange={handleFileChange}
+                  errors={errors}
+                />
+
+                <DocumentCard
+                  label="PAN Document"
+                  name="pan_document"
+                  currentFile={formData.pan_document}
+                  onChange={handleFileChange}
+                  errors={errors}
+                />
+
+                <DocumentCard
+                  label="Letter"
+                  name="letter"
+                  currentFile={formData.letter}
+                  onChange={handleFileChange}
+                  errors={errors}
+                />
+
+                <DocumentCard
+                  label="Company Logo"
+                  name="logo"
+                  currentFile={formData.logo}
+                  onChange={handleFileChange}
+                  errors={errors}
+                  isImage
+                />
           </Section>
+
 
           <Section title="Personal Contact">
             <Input label="Personal Name" name="p_name" value={formData.p_name} onChange={handleChange} errors={errors} />
@@ -233,6 +273,59 @@ const FileInput = ({ label, name, onChange, errors }) => {
     </div>
   );
 };
+
+
+const DocumentCard = ({
+  label,
+  name,
+  currentFile,
+  onChange,
+  errors,
+  isImage = false,
+}) => {
+  const error = errors?.[name];
+
+  return (
+    <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 space-y-2">
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-medium text-gray-200">{label}</p>
+
+        {currentFile && (
+          <a
+            href={`http://127.0.0.1:8000/storage/${currentFile}`}
+            target="_blank"
+            className="text-xs text-blue-400 hover:underline"
+          >
+            View current
+          </a>
+        )}
+      </div>
+
+      {isImage && currentFile && (
+        <img
+          src={`http://127.0.0.1:8000/storage/${currentFile}`}
+          alt="logo"
+          className="h-16 w-16 object-contain bg-gray-900 rounded"
+        />
+      )}
+
+      <input
+        type="file"
+        name={name}
+        onChange={onChange}
+        className={`w-full text-sm bg-gray-900 border rounded
+        ${error ? "border-red-500" : "border-gray-700"}`}
+      />
+
+      <p className="text-xs text-gray-400">
+        Upload only if you want to replace the existing file
+      </p>
+
+      {error && <p className="text-red-500 text-xs">{error[0]}</p>}
+    </div>
+  );
+};
+
 
 const Section = ({ title, children }) => (
   <>

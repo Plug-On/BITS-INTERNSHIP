@@ -129,10 +129,10 @@ class CompaniesController extends Controller
             'status' => 'nullable|string|in:Active,Inactive',
             'p_name' => 'nullable|string|max:255',
             'p_phone' => 'nullable|string|max:20',
-            'registration_document' => 'nullable|mimes:pdf,doc,docx|max:2048',
-            'pan_document' => 'nullable|mimes:pdf,jpg,png|max:2048',
-            'letter' => 'nullable|mimes:pdf,doc,docx|max:2048',
-            'logo' => 'nullable|mimes:jpg,jpeg,png,svg|max:1024',
+            'registration_document' => 'sometimes|mimes:pdf,doc,docx|max:2048',
+            'pan_document' => 'sometimes|mimes:pdf,jpg,png|max:2048',
+            'letter' => 'sometimes|mimes:pdf,doc,docx|max:2048',
+            'logo' => 'sometimes|mimes:jpg,jpeg,png,svg|max:1024',
         ]);
 
         // Auto status
