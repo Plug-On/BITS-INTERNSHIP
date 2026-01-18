@@ -14,8 +14,18 @@ class CompaniesController extends Controller
    public function index()
 {
     $companies = Companies::select([
-        "id", "name", "hosting", "domain", "status", "p_phone", "p_name", "logo"
-    ])->get();
+    "id",
+    "name",
+    "hosting",
+    "hosting_expiry",
+    "domain",
+    "domain_expiry",
+    "status",
+    "p_phone",
+    "p_name",
+    "logo"
+])->get();
+
 
     // Optional: convert logo path to full URL for easier React usage
     $companies->transform(function ($company) {
