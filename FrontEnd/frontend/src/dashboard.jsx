@@ -15,7 +15,8 @@ const Dashboard = () => {
   
 
   return (
-    <div> <Header/>
+    <div> 
+      {/* <Header/> */}
 
     <div className="flex flex-1">
 
@@ -37,7 +38,7 @@ const Dashboard = () => {
             </div>
         </div>
     </div>
-    <Footer/>
+    {/* <Footer/> */}
     </div>
     
   );

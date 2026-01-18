@@ -26,7 +26,7 @@ const Show = () => {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
 
       <div className="flex flex-1">
         <div className="w-64 flex-shrink-0 bg-gray-900 text-white">
@@ -117,7 +117,7 @@ const Show = () => {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

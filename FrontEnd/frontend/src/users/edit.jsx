@@ -74,7 +74,7 @@ const Edit = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <Header />
+      {/* <Header /> */}
 
       <div className="flex flex-1">
         {/* Sidebar */}
@@ -154,7 +154,7 @@ const Edit = () => {
                   >
                     <option value="admin">Admin</option>
                     <option value="employee">Employee</option>
-                    <option value="customer">Customer</option>
+                    {/* <option value="customer">Customer</option> */}
                   </select>
             </div>
 
@@ -199,7 +199,7 @@ const Edit = () => {
       </div>
 
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
     
   );

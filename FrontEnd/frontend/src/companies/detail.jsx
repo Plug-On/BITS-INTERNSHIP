@@ -22,7 +22,7 @@ const Detail = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">
-      <Header />
+      {/* <Header /> */}
       <div className="flex flex-1">
         <div className="w-64 bg-gray-900 text-white">
           <Sidebar />
@@ -100,7 +100,7 @@ const Detail = () => {
           </Card>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
@@ -108,7 +108,8 @@ const Detail = () => {
 // Reusable card component
 const Card = ({ title, children }) => (
   <div className="bg-gray-900 p-6 rounded mb-6 text-gray-300">
-    <h3 className="text-white font-semibold mb-4">{title}</h3>
+    {/* Bold and larger title */}
+    <h3 className="text-white font-bold text-xl mb-4">{title}</h3>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{children}</div>
   </div>
 );

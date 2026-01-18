@@ -25,7 +25,8 @@ const Users = () => {
   };
   
   return (
-     <div> <Header/>
+     <div> 
+      {/* <Header/> */}
 
     <div className="flex flex-1">
 
@@ -88,7 +89,7 @@ const Users = () => {
                   className={`inline-flex px-2 py-1 text-xs font-medium rounded-full
                     ${user.role === 'admin' ? 'bg-red-100 text-red-700' : ''}
                     ${user.role === 'employee' ? 'bg-yellow-100 text-yellow-700' : ''}
-                    ${user.role === 'customer' ? 'bg-green-100 text-green-700' : ''}
+                    
                   `}
                 >
                   {user.role}
@@ -122,7 +123,7 @@ const Users = () => {
 
         </div>
     </div>
-    <Footer/>
+    {/* <Footer/> */}
     </div>
     
   )
