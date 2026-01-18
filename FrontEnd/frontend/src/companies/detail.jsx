@@ -24,67 +24,72 @@ const Detail = () => {
     <div className="min-h-screen flex flex-col bg-gray-900">
       <Header />
       <div className="flex flex-1">
-              <div className="w-64 bg-gray-900 text-white">
-                <Sidebar />
-              </div>
+        <div className="w-64 bg-gray-900 text-white">
+          <Sidebar />
+        </div>
 
         <div className="flex-1 p-6 bg-gray-800">
           {/* Back */}
           <Link to="../companies/show">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md mb-6">
-                  BACK
-                </button>
-             </Link>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md mb-6">
+              BACK
+            </button>
+          </Link>
 
           <h2 className="text-2xl text-white font-semibold mb-6">
             Company Details
           </h2>
 
-          {/* Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 p-6 rounded text-gray-300">
+          {/* Company Info */}
+          <Card title="Company Info">
             <Info label="Company Name" value={company.name} />
             <Info label="Email" value={company.email} />
             <Info label="Phone" value={company.phone} />
             <Info label="Address" value={company.address} />
             <Info label="Status" value={company.status} />
+          </Card>
 
+          {/* Hosting Info */}
+          <Card title="Hosting Details">
             <Info label="Hosting Type" value={company.hosting} />
             <Info label="Hosting Plan" value={company.hosting_plan} />
             <Info label="Hosting Company" value={company.hosting_company} />
             <Info label="Hosting Start" value={company.hosting_plan_start} />
             <Info label="Hosting Expiry" value={company.hosting_expiry} />
+          </Card>
 
+          {/* Domain Info */}
+          <Card title="Domain Details">
             <Info label="Domain" value={company.domain} />
             <Info label="Domain Company" value={company.domain_company} />
             <Info label="Domain Start" value={company.domain_plan_start} />
             <Info label="Domain Expiry" value={company.domain_expiry} />
+          </Card>
 
+          {/* Charges */}
+          <Card title="Charges">
             <Info label="Hosting Charge" value={company.hosting_charge} />
             <Info label="Domain Charge" value={company.domain_charge} />
             <Info label="Maintenance Charge" value={company.maintenance_charge} />
             <Info label="Hosting Renew Charge" value={company.hosting_renew_charge} />
             <Info label="Domain Renew Charge" value={company.domain_renew_charge} />
+          </Card>
 
+          {/* Contact */}
+          <Card title="Contact">
             <Info label="Contact Name" value={company.p_name} />
             <Info label="Contact Phone" value={company.p_phone} />
-          </div>
+          </Card>
 
           {/* Documents */}
-          <div className="bg-gray-900 p-6 rounded mt-6 text-gray-300">
-            <h3 className="text-white font-semibold mb-4">Documents</h3>
-
+          <Card title="Documents">
             {company.registration_document && (
               <Doc label="Registration Document" file={company.registration_document} />
             )}
-
             {company.pan_document && (
               <Doc label="PAN Document" file={company.pan_document} />
             )}
-
-            {company.letter && (
-              <Doc label="Letter" file={company.letter} />
-            )}
-
+            {company.letter && <Doc label="Letter" file={company.letter} />}
             {company.logo && (
               <img
                 src={`http://127.0.0.1:8000/storage/${company.logo}`}
@@ -92,13 +97,21 @@ const Detail = () => {
                 className="h-24 mt-4"
               />
             )}
-          </div>
+          </Card>
         </div>
       </div>
       <Footer />
     </div>
   );
 };
+
+// Reusable card component
+const Card = ({ title, children }) => (
+  <div className="bg-gray-900 p-6 rounded mb-6 text-gray-300">
+    <h3 className="text-white font-semibold mb-4">{title}</h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{children}</div>
+  </div>
+);
 
 const Info = ({ label, value }) => (
   <div>

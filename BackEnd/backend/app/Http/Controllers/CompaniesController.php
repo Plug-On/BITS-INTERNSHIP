@@ -11,14 +11,23 @@ class CompaniesController extends Controller
     /**
      * Display a listing of companies
      */
-    public function index()
-    {
-        $companies = Companies::select([
-            "id", "name", "hosting", "domain", "status", "p_phone", "p_name"
-        ])->get();
+   public function index()
+{
+    $companies = Companies::select([
+        "id", "name", "hosting", "domain", "status", "p_phone", "p_name", "logo"
+    ])->get();
 
-        return response()->json($companies);
-    }
+    // Optional: convert logo path to full URL for easier React usage
+    $companies->transform(function ($company) {
+        if ($company->logo) {
+            $company->logo = url('storage/' . $company->logo);
+        }
+        return $company;
+    });
+
+    return response()->json($companies);
+}
+
 
     /**
      * Store a newly created company
