@@ -132,7 +132,7 @@ const Create = () => {
                     >
                       <option value="admin">Admin</option>
                       <option value="employee">Employee</option>
-                      <option value="customer">Customer</option>
+                      {/* <option value="customer">Customer</option> */}
                     </select>
             </div>
 
