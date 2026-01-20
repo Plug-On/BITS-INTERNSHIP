@@ -1,14 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
+import ConfirmModal from "../components/ConfirmModal";
 
 export default function Sidebar() {
   const [user, setUser] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -29,12 +33,7 @@ export default function Sidebar() {
       try {
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
-        axios
-          .get("http://127.0.0.1:8000/api/dashboard", {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((response) => console.log("Dashboard data:", response.data))
-          .catch(() => setError("Failed to fetch dashboard data."));
+       
       } catch {
         localStorage.removeItem("user");
         navigate("/login");
@@ -58,8 +57,12 @@ export default function Sidebar() {
       localStorage.removeItem("token");
       navigate("/");
     } catch {
-      setError("Failed to log out.");
+      toast.setError("Failed to log out.");
     }
+    finally {
+      setLogoutConfirmOpen(false);
+    }
+
   };
 
   if (loading)
@@ -118,7 +121,7 @@ export default function Sidebar() {
               <span className="text-white font-medium truncate">{user?.name}</span>
             </div>
             <button
-              onClick={handleLogout}
+              onClick={setLogoutConfirmOpen}
               className="w-full text-left px-4 py-2 hover:bg-red-600 hover:text-white text-red-500 font-semibold rounded-b-md"
             >
               Logout
@@ -163,6 +166,14 @@ export default function Sidebar() {
           ))}
         </ul>
       </div>
+      <ConfirmModal
+  open={logoutConfirmOpen}
+  title="Confirm Logout"
+  message="Are you sure you want to log out?"
+  onConfirm={handleLogout}
+  onCancel={() => setLogoutConfirmOpen(false)}
+/>
+
     </aside>
   );
 }

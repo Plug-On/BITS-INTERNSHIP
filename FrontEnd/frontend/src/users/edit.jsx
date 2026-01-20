@@ -4,6 +4,7 @@ import Header from '../header';
 import Footer from '../footer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Edit = () => {
 
@@ -57,14 +58,14 @@ const Edit = () => {
               data
             );
 
-            setSuccess("User updated successfully.");
+            toast.success("User updated successfully.");
             setError("");
             navigate("../users/show");
           } catch (err) {
             if (err.response?.data?.errors) {
-              setError("User update failed");
+              toast.error("User update failed");
             } else {
-              setError("Something went wrong.");
+              toast.error("Something went wrong.");
             }
             setSuccess("");
           }

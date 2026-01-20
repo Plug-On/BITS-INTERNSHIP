@@ -4,6 +4,7 @@ import Header from '../header';
 import Footer from '../footer';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Create = () => {
 
@@ -11,9 +12,7 @@ const Create = () => {
     const[email, setEmail] = useState('');
     const [role, setRole] = useState("customer");
     const[password, setPassword] = useState('');
-     const [error, setError] = useState("");
-      const [success, setSuccess] = useState("");
-      const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -28,17 +27,18 @@ const Create = () => {
       try {
         
         await axios.post("http://localhost:8000/api/users",data);
-        setSuccess("User added successfully.");
+        toast.success("User added successfully.");
          navigate ('../users/show');
         
       } catch (err) {
-        if (err.response?.data?.errors) {
-        setError(err.response.data.errors.email || "User addition failed");
-      } else {
-        setError("Something went wrong.");
-      }
-      }
-
+          if (err.response?.data?.errors) {
+            // flatten all backend validation errors into one message
+            const messages = Object.values(err.response.data.errors).flat();
+            toast.error(messages.join(", "));
+          } else {
+            toast.error("Something went wrong.");
+          }
+        }
     };
 
   return (
@@ -163,12 +163,7 @@ const Create = () => {
           
           </form>
 
-              {error && (
-          <div className="mt-4 text-red-600 text-sm text-center">{error}</div>
-        )}
-        {success && (
-          <div className="mt-4 text-green-600 text-sm text-center">{success}</div>
-        )}        
+               
 
 
           </div>

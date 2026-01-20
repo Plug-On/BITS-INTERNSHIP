@@ -40,7 +40,7 @@ const Home = () => {
         </button>
           <button 
           onClick={() => navigate('/register')}
-          className="px-6 py-3 bg-green-600 rounded-lg hover:bg-green-700">
+          className="px-6 py-3 bg-green-600 rounded-lg hover:bg-indigo-700">
             Get Started
           </button>
         </div>
@@ -86,7 +86,7 @@ const Home = () => {
       {/* CTA SECTION */}
       <section className="py-20 text-center px-6">
         <h2 className="text-3xl font-semibold mb-4">
-          Ready to manage your projects smarter?
+          Ready to manage your web projects smarter?
         </h2>
         <p className="text-gray-300 mb-6">
           Create an account and start tracking everything today.

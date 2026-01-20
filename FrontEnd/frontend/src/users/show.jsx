@@ -5,10 +5,15 @@ import Footer from '../footer';
 import { Link, Links } from 'react-router-dom';
 import { getUsers } from "../services/userService";
 import axios from 'axios';
+import toast from "react-hot-toast";
+import ConfirmModal from "../components/ConfirmModal";
+
 
 const Users = () => {
 
  const [users, setUsers] = useState([]);
+ const [confirmOpen, setConfirmOpen] = useState(false);
+const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     getUsers()
@@ -16,13 +21,23 @@ const Users = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  const handleDelete = (id)=>{
-    if(confirm("Are you sure you want to delete?")){
-       axios.delete(`http://localhost:8000/api/users/${id}`).then(() => {
-        setUsers(users.filter(u => u.id !== id));
-       });
-    };
-  };
+  const askDelete = (id) => {
+  setDeleteId(id);
+  setConfirmOpen(true);
+};
+
+const handleDelete = async () => {
+  try {
+    await axios.delete(`http://localhost:8000/api/users/${deleteId}`);
+    setUsers(users.filter(u => u.id !== deleteId));
+    toast.success("User deleted successfully");
+  } catch (err) {
+    toast.error("Failed to delete user");
+  } finally {
+    setConfirmOpen(false);
+  }
+};
+
   
   return (
      <div> 
@@ -76,7 +91,9 @@ const Users = () => {
 
         <tbody>
           {users.map((user) =>
-          <tr className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
+          <tr
+          key={user.id}
+          className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
             <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.id}</td>
             <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
               {user.name}
@@ -102,11 +119,11 @@ const Users = () => {
               </span>
               <span className="text-red-600 hover:underline cursor-pointer">
                 <button
-                  onClick={() => handleDelete(user.id)}
-                  className="text-red-600 font-bold hover:scale-105 hover:underline cursor-pointer"
-                >
-                  Delete
-                </button>
+                onClick={() => askDelete(user.id)}
+                className="text-red-600 font-bold hover:scale-105 hover:underline">
+                Delete
+              </button>
+
 
               </span>
             </td>
@@ -124,6 +141,14 @@ const Users = () => {
         </div>
     </div>
     {/* <Footer/> */}
+    <ConfirmModal
+      open={confirmOpen}
+      title="Delete User"
+      message="Are you sure you want to delete this user? This action cannot be undone."
+      onConfirm={handleDelete}
+      onCancel={() => setConfirmOpen(false)}
+    />
+
     </div>
     
   )
