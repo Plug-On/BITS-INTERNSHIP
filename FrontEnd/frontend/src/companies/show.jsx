@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../header";
 import Footer from "../footer";
 import { Link } from "react-router-dom";
 import { getCompanies } from "../services/userService";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import ConfirmModal from "../components/ConfirmModal";
+import { toast } from "react-hot-toast";
 
 const Show = () => {
   const [companies, setCompanies] = useState([]);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
 
   useEffect(() => {
     getCompanies()
@@ -16,11 +19,27 @@ const Show = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete?")) {
-      axios.delete(`http://localhost:8000/api/companies/${id}`).then(() => {
-        setCompanies(companies.filter((u) => u.id !== id));
-      });
+  const openDeleteConfirm = (id) => {
+    setSelectedCompanyId(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/companies/${selectedCompanyId}`
+      );
+
+      setCompanies((prev) =>
+        prev.filter((c) => c.id !== selectedCompanyId)
+      );
+
+      toast.success("Company deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete company");
+    } finally {
+      setDeleteConfirmOpen(false);
+      setSelectedCompanyId(null);
     }
   };
 
@@ -62,13 +81,13 @@ const Show = () => {
               {companies?.length > 0 ? (
                 companies.map((company) => (
                   <tr key={company.id} className="border-b hover:bg-gray-700">
-                    <td className="px-4 py-3 text-white text-sm text-gray-700">{company.id}</td>
+                    <td className="px-4 py-3 text-sm text-white">{company.id}</td>
                     <td className="px-4 py-3">
                       <Avatar company={company} />
                     </td>
-                    <td className="px-4 py-3 text-white text-sm text-gray-700">{company.name}</td>
-                    <td className="px-4 py-3 text-white text-sm text-gray-700">{company.hosting}</td>
-                    <td className="px-4 py-3 text-white text-sm text-gray-700">{company.domain}</td>
+                    <td className="px-4 py-3 text-sm text-white">{company.name}</td>
+                    <td className="px-4 py-3 text-sm text-white">{company.hosting}</td>
+                    <td className="px-4 py-3 text-sm text-white">{company.domain}</td>
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
@@ -80,25 +99,25 @@ const Show = () => {
                         {company.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-white text-sm text-gray-700">
+                    <td className="px-4 py-3 text-sm text-white">
                       {company.p_name} ({company.p_phone})
                     </td>
                     <td className="px-4 py-3 flex gap-3">
                       <Link
                         to={`/companies/detail/${company.id}`}
-                        className="text-green-600 font-bold hover:scale-105 hover:text-green-400 hover:underline cursor-pointer"
+                        className="text-green-600 font-bold hover:underline"
                       >
                         View
                       </Link>
                       <Link
                         to={`/companies/edit/${company.id}`}
-                        className="text-blue-600 font-bold hover:scale-105 hover:text-blue-400 hover:underline cursor-pointer"
+                        className="text-blue-600 font-bold hover:underline"
                       >
                         Edit
                       </Link>
                       <button
-                        onClick={() => handleDelete(company.id)}
-                        className="text-red-600 font-bold hover:scale-105 hover:underline cursor-pointer"
+                        onClick={() => openDeleteConfirm(company.id)}
+                        className="text-red-600 font-bold hover:underline"
                       >
                         Delete
                       </button>
@@ -117,17 +136,25 @@ const Show = () => {
         </div>
       </div>
 
+      <ConfirmModal
+        open={deleteConfirmOpen}
+        title="Delete Company"
+        message="Are you sure you want to delete this company?"
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteConfirmOpen(false)}
+      />
+
       {/* <Footer /> */}
     </div>
   );
 };
 
-// Avatar component for Logo column
+// Avatar component
 const Avatar = ({ company }) => {
   if (company.logo && company.logo.trim() !== "") {
     return (
       <img
-        src={company.logo} // now full URL
+        src={company.logo}
         alt="Logo"
         className="w-10 h-10 rounded-full object-cover"
       />
@@ -147,7 +174,5 @@ const Avatar = ({ company }) => {
     </div>
   );
 };
-
-
 
 export default Show;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Edit = () => {
   const { id } = useParams();
@@ -100,13 +101,13 @@ Object.keys(formData).forEach((key) => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      alert("Company updated successfully!");
+      toast.success("Company updated successfully!");
       navigate("../companies/show");
     } catch (err) {
       if (err.response?.status === 422) {
-        setErrors(err.response.data.errors);
+        toast.error(err.response.data.errors);
       } else {
-        alert("Error updating company");
+        toast.error("Error updating company");
       }
     }
   };

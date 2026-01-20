@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Create = () => {
   const navigate = useNavigate();
@@ -70,19 +71,19 @@ const Create = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      alert("Company created successfully!");
+      toast.success("Company created successfully!");
       navigate("../companies/show");
     } catch (err) {
       if (err.response?.status === 422) {
-        setErrors(err.response.data.errors);
+        toast.error(err.response.data.errors);
       } else {
-        alert("Error creating company");
+        toast.error("Error creating company");
       }
     }
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-900">
+    <div className="min-h-screen flex bg-gray-900 text-white">
       <div className="w-64">
         <Sidebar />
       </div>
