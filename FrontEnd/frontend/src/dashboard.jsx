@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [companies, setCompanies] = useState([]);
@@ -80,33 +81,33 @@ const recentActivity = companies
         
          {/* Quick Actions / Links */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-                <button
-                  onClick={() => window.location.href = "/companies/show"}
-                  className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-semibold transition"
-                >
-                  View All Companies
-                </button>
+                    <Link
+                      to="/companies/show"
+                      className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
+                    >
+                      View All Companies
+                    </Link>
 
-                <button
-                  onClick={() => window.location.href = "/users/show"}
-                  className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md font-semibold transition"
-                >
-                  View All Users
-                </button>
+                    <Link
+                      to="/users/show"
+                      className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
+                    >
+                      View All Users
+                    </Link>
 
-                <button
-                  onClick={() => window.location.href = "/companies/create"}
-                  className="bg-yellow-600 hover:bg-yellow-700 text-white py-3 px-4 rounded-md font-semibold transition"
-                >
-                  Add New Company
-                </button>
+                    <Link
+                      to="/companies/create"
+                      className="bg-yellow-600 hover:bg-yellow-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
+                    >
+                      Add New Company
+                    </Link>
 
-                <button
-                  onClick={() => window.location.href = "/users/create"}
-                  className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-md font-semibold transition"
-                >
-                  Add New User
-                </button>
+                    <Link
+                      to="/users/create"
+                      className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
+                    >
+                      Add New User
+                    </Link>
               </div>
 
 
