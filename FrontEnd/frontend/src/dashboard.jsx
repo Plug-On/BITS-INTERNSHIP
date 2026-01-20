@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import dayjs from "dayjs";
 
 const Dashboard = () => {
   const [companies, setCompanies] = useState([]);
@@ -44,14 +45,24 @@ const Dashboard = () => {
   const COLORS = ["#38bdf8", "#f87171"]; // Sky blue, Red
 
   // Simulate Recent Activity from last 5 companies
-  const recentActivity = companies
-    .slice(-5)
-    .map(c => ({
+  // Example: recentActivity array
+const recentActivity = companies
+  .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+  .slice(0, 5)
+  .map(c => {
+    const created = new Date(c.created_at);
+    const updated = new Date(c.updated_at);
+
+    return {
       id: c.id,
       name: c.name,
-      type: "Updated",
-      date: new Date().toLocaleDateString(),
-    }));
+      type: updated > created ? "Updated" : "Created",
+      date: (updated > created ? updated : created).toLocaleDateString(),
+    };
+  });
+
+
+
 
   if (loading) return <p className="text-white p-6">Loading dashboard...</p>;
 
@@ -63,6 +74,43 @@ const Dashboard = () => {
 
       <div className="flex-1 overflow-auto p-6">
         <h2 className="text-2xl font-semibold mb-6">Dashboard</h2>
+
+
+
+        
+         {/* Quick Actions / Links */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+                <button
+                  onClick={() => window.location.href = "/companies/show"}
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-semibold transition"
+                >
+                  View All Companies
+                </button>
+
+                <button
+                  onClick={() => window.location.href = "/users/show"}
+                  className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md font-semibold transition"
+                >
+                  View All Users
+                </button>
+
+                <button
+                  onClick={() => window.location.href = "/companies/create"}
+                  className="bg-yellow-600 hover:bg-yellow-700 text-white py-3 px-4 rounded-md font-semibold transition"
+                >
+                  Add New Company
+                </button>
+
+                <button
+                  onClick={() => window.location.href = "/users/create"}
+                  className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-md font-semibold transition"
+                >
+                  Add New User
+                </button>
+              </div>
+
+
+
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -78,8 +126,8 @@ const Dashboard = () => {
 
         {/* Expiring Tables and Chart */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <ExpiringTable title="Hosting Expiring Soon" data={expiringHosting} type="hosting" />
-          <ExpiringTable title="Domains Expiring Soon" data={expiringDomains} type="domain" />
+          <ExpiringTable title="Hosting Expiring Soon (in 7 days)" data={expiringHosting} type="hosting" />
+          <ExpiringTable title="Domains Expiring Soon (in 7 days)" data={expiringDomains} type="domain" />
         </div>
 
         {/* Chart and Recent Activity */}
@@ -107,7 +155,7 @@ const Dashboard = () => {
           </div>
 
           <div className="bg-gray-800 rounded-lg p-4">
-            <h3 className="text-white font-semibold mb-4">Recent Activity</h3>
+            <h3 className="text-white font-semibold mb-4">Latest changes</h3>
             <ul className="text-gray-300 space-y-2">
               {recentActivity.map((act) => (
                 <li key={act.id} className="border-b border-gray-700 pb-1">

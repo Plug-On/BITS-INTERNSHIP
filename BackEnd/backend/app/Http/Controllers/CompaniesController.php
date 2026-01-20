@@ -23,7 +23,9 @@ class CompaniesController extends Controller
     "status",
     "p_phone",
     "p_name",
-    "logo"
+    "logo",
+    "created_at",
+    "updated_at",
 ])->get();
 
 
@@ -32,6 +34,9 @@ class CompaniesController extends Controller
         if ($company->logo) {
             $company->logo = url('storage/' . $company->logo);
         }
+
+        $company->created_at = $company->created_at?->toIso8601String();
+    $company->updated_at = $company->updated_at?->toIso8601String();
         return $company;
     });
 
