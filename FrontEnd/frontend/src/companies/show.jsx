@@ -12,10 +12,14 @@ const Show = () => {
   const [companies, setCompanies] = useState([]);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null);
 
   useEffect(() => {
     getCompanies()
-      .then((res) => setCompanies(res.data))
+      .then((res) => {
+        const sorted = [...res.data].sort((a, b) => b.id - a.id);
+        setCompanies(sorted);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -29,11 +33,7 @@ const Show = () => {
       await axios.delete(
         `http://localhost:8000/api/companies/${selectedCompanyId}`
       );
-
-      setCompanies((prev) =>
-        prev.filter((c) => c.id !== selectedCompanyId)
-      );
-
+      setCompanies((prev) => prev.filter((c) => c.id !== selectedCompanyId));
       toast.success("Company deleted successfully");
     } catch (error) {
       toast.error("Failed to delete company");
@@ -43,10 +43,15 @@ const Show = () => {
     }
   };
 
+  // helper to check expired dates
+  const isExpired = (date) => {
+    if (!date) return false;
+    return new Date(date) < new Date();
+  };
+
   return (
     <div>
       {/* <Header /> */}
-
       <div className="flex flex-1">
         <div className="w-64 flex-shrink-0 bg-gray-900 text-white">
           <Sidebar />
@@ -54,8 +59,7 @@ const Show = () => {
 
         <div className="flex-1 overflow-auto bg-gray-900 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Companies</h2>
-
+            <h2 className="text-lg font-bold text-white">Companies</h2>
             <Link to="../companies/create">
               <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
                 + Add Company
@@ -66,7 +70,7 @@ const Show = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 text-left">
-                <th className="px-4 py-3 text-sm font-semibold text-gray-700 w-16">ID</th>
+                <th className="px-4 py-3 text-sm font-semibold text-gray-700 w-16">S.N.</th>
                 <th className="px-4 py-3 text-sm font-semibold text-gray-700 w-16">Logo</th>
                 <th className="px-4 py-3 text-sm font-semibold text-gray-700">Name</th>
                 <th className="px-4 py-3 text-sm font-semibold text-gray-700">Hosting</th>
@@ -79,50 +83,118 @@ const Show = () => {
 
             <tbody>
               {companies?.length > 0 ? (
-                companies.map((company) => (
-                  <tr key={company.id} className="border-b hover:bg-gray-700">
-                    <td className="px-4 py-3 text-sm text-white">{company.id}</td>
-                    <td className="px-4 py-3">
-                      <Avatar company={company} />
-                    </td>
-                    <td className="px-4 py-3 text-sm text-white">{company.name}</td>
-                    <td className="px-4 py-3 text-sm text-white">{company.hosting}</td>
-                    <td className="px-4 py-3 text-sm text-white">{company.domain}</td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                          company.status === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {company.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-white">
-                      {company.p_name} ({company.p_phone})
-                    </td>
-                    <td className="px-4 py-3 flex gap-3">
-                      <Link
-                        to={`/companies/detail/${company.id}`}
-                        className="text-green-600 font-bold hover:underline"
-                      >
-                        View
-                      </Link>
-                      <Link
-                        to={`/companies/edit/${company.id}`}
-                        className="text-blue-600 font-bold hover:underline"
-                      >
-                        Edit
-                      </Link>
+                companies.map((company, index) => (
+                  <React.Fragment key={company.id}>
+                    {/* MAIN ROW */}
+                    <tr className="border-b hover:bg-gray-700">
+                      <td className="px-4 py-3 text-sm text-white">{index + 1}</td>
+                      <td className="px-4 py-3"><Avatar company={company} /></td>
+                      <td className="px-4 py-3 text-sm text-white">{company.name}</td>
+                      
+                      {/* Hosting badge + click to expand */}
+                      <td className="px-6 py-3 align-middle">
                       <button
-                        onClick={() => openDeleteConfirm(company.id)}
-                        className="text-red-600 font-bold hover:underline"
+                        onClick={() =>
+                          setExpandedRow(expandedRow === company.id ? null : company.id)
+                        }
+                        className="focus:outline-none"
                       >
-                        Delete
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                            company.hosting === "Single"
+                              ? "bg-blue-100 text-blue-700"
+                              : company.hosting === "Shared"
+                              ? "bg-purple-100 text-purple-700"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          {company.hosting || "-"}
+                        </span>
                       </button>
                     </td>
-                  </tr>
+
+
+
+                      <td className="px-4 py-3 text-sm text-white">{company.domain}</td>
+
+                      <td className="px-4 py-3">
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                            company.status === "Active"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {company.status}
+                        </span>
+                      </td>
+
+                      <td className="px-4 py-3 text-sm text-white">
+                        {company.p_name} ({company.p_phone})
+                      </td>
+
+                      <td className="px-4 py-3 flex gap-3">
+                        <Link
+                          to={`/companies/detail/${company.id}`}
+                          className="text-green-600 font-bold hover:underline"
+                        >
+                          View
+                        </Link>
+                        <Link
+                          to={`/companies/edit/${company.id}`}
+                          className="text-blue-600 font-bold hover:underline"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => openDeleteConfirm(company.id)}
+                          className="text-red-600 font-bold hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+
+                    {/* EXPANDED ROW */}
+                    {expandedRow === company.id && (
+                      <tr className="bg-gray-800">
+                        <td colSpan="8" className="px-6 py-4 text-sm text-gray-200">
+                          <div className="grid grid-cols-2 gap-6 px-14">
+
+                            {/* Hosting Details */}
+                            <div>
+                              <h4 className="text-blue-400 font-semibold mb-2">Hosting Details</h4>
+                              <p><b>Hosting Type:</b> {company.hosting}</p>
+                              <p><b>Hosting Plan:</b> {company.hosting_plan}</p>
+                              <p><b>Hosting Company:</b> {company.hosting_company}</p>
+                              <p><b>Hosting Start:</b> {company.hosting_plan_start}</p>
+                              <p>
+                                <b>Hosting Expiry:</b>{" "}
+                                <span className={isExpired(company.hosting_expiry) ? "text-red-500 font-semibold" : "text-green-400"}>
+                                  {company.hosting_expiry}
+                                </span>
+                              </p>
+                            </div>
+
+                            {/* Domain Details */}
+                            <div>
+                              <h4 className="text-green-400 font-semibold mb-2">Domain Details</h4>
+                              <p><b>Domain:</b> {company.domain}</p>
+                              <p><b>Domain Company:</b> {company.domain_company}</p>
+                              <p><b>Domain Start:</b> {company.domain_plan_start}</p>
+                              <p>
+                                <b>Domain Expiry:</b>{" "}
+                                <span className={isExpired(company.domain_expiry) ? "text-red-500 font-semibold" : "text-green-400"}>
+                                  {company.domain_expiry}
+                                </span>
+                              </p>
+                            </div>
+
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 ))
               ) : (
                 <tr>

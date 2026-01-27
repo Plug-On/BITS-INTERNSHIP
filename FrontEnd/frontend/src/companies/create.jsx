@@ -90,7 +90,7 @@ const Create = () => {
 
       <div className="flex-1 bg-gray-800 p-6 overflow-auto">
         <h2 className="text-2xl font-semibold text-white mb-6">
-          Company Plans Creation
+          Company Creation
         </h2>
 
         <Link to="../companies/show">
@@ -157,7 +157,7 @@ const Create = () => {
           </Section>
 
           <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mt-6">
-            Create Company Plans
+            Create Company 
           </button>
         </form>
       </div>

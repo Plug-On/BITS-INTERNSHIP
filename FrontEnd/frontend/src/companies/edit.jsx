@@ -120,7 +120,7 @@ Object.keys(formData).forEach((key) => {
 
       <div className="flex-1 p-6 bg-gray-800 overflow-auto">
         <h2 className="text-2xl font-semibold text-white mb-6">
-          Edit Company Plans
+          Edit Company 
         </h2>
 
         <Link to="../companies/show">
