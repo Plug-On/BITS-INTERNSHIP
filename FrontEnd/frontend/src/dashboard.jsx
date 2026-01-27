@@ -4,6 +4,7 @@ import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import NotificationBell from "./components/NotificationBell";
 
 const Dashboard = () => {
   const [companies, setCompanies] = useState([]);
@@ -26,6 +27,15 @@ const Dashboard = () => {
   const totalCompanies = companies.length;
   const activeCompanies = companies.filter(c => c.status === "Active").length;
   const inactiveCompanies = companies.filter(c => c.status === "Inactive").length;
+
+  const isExpired = (dateStr) => {
+  if (!dateStr) return false;
+  return new Date(dateStr) < new Date();
+};
+
+const expiredHosting = companies.filter(c => isExpired(c.hosting_expiry));
+const expiredDomains = companies.filter(c => isExpired(c.domain_expiry));
+
 
   const today = new Date();
   const isExpiringSoon = (dateStr) => {
@@ -83,8 +93,15 @@ const recentActivity = companies
         <Sidebar />
       </div>
 
+
       <div className="flex-1 overflow-auto p-6">
-        <h2 className="text-2xl font-semibold mb-6">Dashboard</h2>
+
+
+        <div className="flex justify-between items-center mb-6">
+  <h2 className="text-2xl font-semibold">Dashboard</h2>
+  <NotificationBell companies={companies} />
+</div>
+
 
 
 
@@ -134,6 +151,23 @@ const recentActivity = companies
             icon="⏰"
           />
         </div>
+
+
+                    {(expiredHosting.length || expiredDomains.length) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <ExpiredTable
+                  title="Hosting Expired"
+                  data={expiredHosting}
+                  type="hosting"
+                />
+                <ExpiredTable
+                  title="Domain Expired"
+                  data={expiredDomains}
+                  type="domain"
+                />
+              </div>
+            )}
+
 
         {/* Expiring Tables and Chart */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -205,16 +239,16 @@ const ExpiringTable = ({ title, data, type, remainingDays }) => (
             <>
               <th>Company</th>
               <th>Plan</th>
-              <th>Expiry</th>
-              <th>Days Rem..</th>
+              <th>Expiry Date</th>
+              <th>Expires In</th>
               <th>Details</th>
             </>
           ) : (
             <>
               <th>Domain</th>
               <th>Company</th>
-              <th>Expiry</th>
-              <th>Days Rem..</th>
+              <th>Expiry Date</th>
+              <th>Expires In</th>
               <th>Details</th>
             </>
           )}
@@ -229,7 +263,7 @@ const ExpiringTable = ({ title, data, type, remainingDays }) => (
                   <td>{c.name}</td>
                   <td>{c.hosting}</td>
                   <td className="text-red-400">{c.hosting_expiry}</td>
-                  <td className="text-red-400">{remainingDays(c.hosting_expiry)}</td>
+                  <td className="text-red-400">{remainingDays(c.hosting_expiry)} days</td>
                    <td>
                       <button
                         onClick={() => window.location.href = `/companies/detail/${c.id}`}
@@ -244,7 +278,7 @@ const ExpiringTable = ({ title, data, type, remainingDays }) => (
                   <td>{c.domain}</td>
                   <td>{c.name}</td>
                   <td className="text-red-400">{c.domain_expiry}</td>
-                  <td className="text-red-400">{remainingDays(c.domain_expiry)}</td>
+                  <td className="text-red-400">{remainingDays(c.domain_expiry)} days</td>
                   <td>
                       <button
                         onClick={() => window.location.href = `/companies/detail/${c.id}`}
@@ -268,5 +302,74 @@ const ExpiringTable = ({ title, data, type, remainingDays }) => (
     </table>
   </div>
 );
+
+const ExpiredTable = ({ title, data, type }) => (
+  <div className="bg-gray-800 rounded-lg p-4">
+    <h3 className="text-red-400 font-semibold mb-3">🚨 {title}</h3>
+
+    <table className="w-full text-left text-sm text-gray-300">
+      <thead>
+        <tr>
+          {type === "hosting" ? (
+            <>
+              <th>Company</th>
+              <th>Plan</th>
+              <th>Expired On</th>
+              <th>Details</th>
+            </>
+          ) : (
+            <>
+              <th>Domain</th>
+              <th>Company</th>
+              <th>Expired On</th>
+              <th>Details</th>
+            </>
+          )}
+        </tr>
+      </thead>
+
+      <tbody>
+        {data.length ? (
+          data.map((c, idx) => (
+            <tr
+              key={idx}
+              className="border-t border-red-700 bg-red-950/40"
+            >
+              {type === "hosting" ? (
+                <>
+                  <td>{c.name}</td>
+                  <td>{c.hosting}</td>
+                  <td className="text-red-400">{c.hosting_expiry}</td>
+                </>
+              ) : (
+                <>
+                  <td>{c.domain}</td>
+                  <td>{c.name}</td>
+                  <td className="text-red-400">{c.domain_expiry}</td>
+                </>
+              )}
+
+              <td>
+                <Link
+                  to={`/companies/detail/${c.id}`}
+                  className="hover:bg-blue-700 text-white my-1 px-2  rounded text-sm"
+                >
+                  View
+                </Link>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={4} className="text-gray-500 text-center py-3">
+              No expired items 🎉
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+);
+
 
 export default Dashboard;
