@@ -32,8 +32,18 @@ const Dashboard = () => {
     if (!dateStr) return false;
     const date = new Date(dateStr);
     const diff = (date - today) / (1000 * 60 * 60 * 24);
-    return diff >= 0 && diff <= 7;
+    return diff >= 0 && diff <= 15;
   };
+
+
+    const remainingDays = (dateStr) => {
+    if (!dateStr) return "";
+    const today = new Date();
+    const expiryDate = new Date(dateStr);
+    const diff = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : "";
+  };
+
 
   const expiringHosting = companies.filter(c => isExpiringSoon(c.hosting_expiry));
   const expiringDomains = companies.filter(c => isExpiringSoon(c.domain_expiry));
@@ -127,8 +137,8 @@ const recentActivity = companies
 
         {/* Expiring Tables and Chart */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <ExpiringTable title="Hosting Expiring Soon (in 7 days)" data={expiringHosting} type="hosting" />
-          <ExpiringTable title="Domains Expiring Soon (in 7 days)" data={expiringDomains} type="domain" />
+          <ExpiringTable title="Hosting Expiring Soon (in 15 days)" data={expiringHosting} type="hosting" remainingDays={remainingDays} />
+          <ExpiringTable title="Domains Expiring Soon (in 15 days)" data={expiringDomains} type="domain" remainingDays={remainingDays}/>
         </div>
 
         {/* Chart and Recent Activity */}
@@ -185,7 +195,7 @@ const Card = ({ title, value, icon }) => (
   </div>
 );
 
-const ExpiringTable = ({ title, data, type }) => (
+const ExpiringTable = ({ title, data, type, remainingDays }) => (
   <div className="bg-gray-800 rounded-lg p-4">
     <h3 className="text-white font-semibold mb-3">{title}</h3>
     <table className="w-full text-left text-gray-300 text-sm">
@@ -196,6 +206,7 @@ const ExpiringTable = ({ title, data, type }) => (
               <th>Company</th>
               <th>Plan</th>
               <th>Expiry</th>
+              <th>Days Rem..</th>
               <th>Details</th>
             </>
           ) : (
@@ -203,6 +214,7 @@ const ExpiringTable = ({ title, data, type }) => (
               <th>Domain</th>
               <th>Company</th>
               <th>Expiry</th>
+              <th>Days Rem..</th>
               <th>Details</th>
             </>
           )}
@@ -217,6 +229,7 @@ const ExpiringTable = ({ title, data, type }) => (
                   <td>{c.name}</td>
                   <td>{c.hosting}</td>
                   <td className="text-red-400">{c.hosting_expiry}</td>
+                  <td className="text-red-400">{remainingDays(c.hosting_expiry)}</td>
                    <td>
                       <button
                         onClick={() => window.location.href = `/companies/detail/${c.id}`}
@@ -231,6 +244,7 @@ const ExpiringTable = ({ title, data, type }) => (
                   <td>{c.domain}</td>
                   <td>{c.name}</td>
                   <td className="text-red-400">{c.domain_expiry}</td>
+                  <td className="text-red-400">{remainingDays(c.domain_expiry)}</td>
                   <td>
                       <button
                         onClick={() => window.location.href = `/companies/detail/${c.id}`}

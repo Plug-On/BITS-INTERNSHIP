@@ -13,6 +13,8 @@ const Show = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   useEffect(() => {
     getCompanies()
@@ -49,6 +51,14 @@ const Show = () => {
     return new Date(date) < new Date();
   };
 
+
+  const filteredCompanies = companies.filter((company) =>
+  `${company.name} ${company.domain} ${company.p_name} ${company.p_phone}`
+    .toLowerCase()
+    .includes(searchTerm.toLowerCase())
+);
+
+
   return (
     <div>
       {/* <Header /> */}
@@ -58,14 +68,27 @@ const Show = () => {
         </div>
 
         <div className="flex-1 overflow-auto bg-gray-900 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-white">Companies</h2>
-            <Link to="../companies/create">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
-                + Add Company
-              </button>
-            </Link>
+          <div className="flex items-center justify-between mb-4 relative">
+  <h2 className="text-lg font-bold text-white">Companies</h2>
+
+  {/* Search Bar (Center) */}
+  <div className="absolute left-1/2 transform -translate-x-1/2 w-1/3">
+    <input
+      type="text"
+      placeholder="Search company..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-full px-4 py-2 rounded-md bg-gray-800 text-white text-sm border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <Link to="../companies/create">
+    <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
+      + Add Company
+    </button>
+  </Link>
           </div>
+
 
           <table className="w-full border-collapse">
             <thead>
@@ -83,7 +106,7 @@ const Show = () => {
 
             <tbody>
               {companies?.length > 0 ? (
-                companies.map((company, index) => (
+                filteredCompanies.map((company, index) => (
                   <React.Fragment key={company.id}>
                     {/* MAIN ROW */}
                     <tr className="border-b hover:bg-gray-700">
