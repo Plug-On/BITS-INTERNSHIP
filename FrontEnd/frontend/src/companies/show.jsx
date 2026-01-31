@@ -14,6 +14,8 @@ const Show = () => {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [expiryFilter, setExpiryFilter] = useState("all");
+
 
 
   useEffect(() => {
@@ -52,11 +54,32 @@ const Show = () => {
   };
 
 
-  const filteredCompanies = companies.filter((company) =>
-  `${company.name} ${company.domain} ${company.p_name} ${company.p_phone}`
-    .toLowerCase()
-    .includes(searchTerm.toLowerCase())
-);
+//   const filteredCompanies = companies.filter((company) =>
+//   `${company.name} ${company.domain} ${company.p_name} ${company.p_phone}`
+//     .toLowerCase()
+//     .includes(searchTerm.toLowerCase())
+// );
+
+
+            //Filter logic
+              const filteredCompanies = companies.filter((company) => {
+                const matchesSearch =
+                  `${company.name} ${company.domain} ${company.p_name} ${company.p_phone}`
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+
+                const domainExpired = isExpired(company.domain_expiry);
+                const hostingExpired = isExpired(company.hosting_expiry);
+
+                let matchesExpiry = true;
+
+                if (expiryFilter === "domain") matchesExpiry = domainExpired;
+                if (expiryFilter === "hosting") matchesExpiry = hostingExpired;
+                if (expiryFilter === "both") matchesExpiry = domainExpired && hostingExpired;
+
+                return matchesSearch && matchesExpiry;
+              });
+
 
 
   return (
@@ -80,13 +103,34 @@ const Show = () => {
       onChange={(e) => setSearchTerm(e.target.value)}
       className="w-full px-4 py-2 rounded-md bg-gray-800 text-white text-sm border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
+
+
+    
   </div>
+
+ 
+
 
   <Link to="../companies/create">
     <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
       + Add Company
     </button>
   </Link>
+          </div>
+
+            {/* FILTER BAR */}
+          <div className="flex justify-end mb-3">
+             <span className="text-l font-bold px-5 py-2 text-gray-400">Filter:</span>
+            <select
+              value={expiryFilter}
+              onChange={(e) => setExpiryFilter(e.target.value)}
+              className="px-3 py-2 bg-gray-800 text-white text-sm rounded border border-gray-600"
+            >
+              <option value="all">All</option>
+              <option value="domain">Expired Domain</option>
+              <option value="hosting">Expired Hosting</option>
+              <option value="both">Expired Domain + Hosting</option>
+            </select>
           </div>
 
 
