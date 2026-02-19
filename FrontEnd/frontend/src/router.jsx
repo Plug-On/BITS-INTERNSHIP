@@ -14,6 +14,9 @@ import Edit from './companies/edit';
 import UShow from './users/show';
 import UEdit from './users/edit';
 import UCreate from './users/create';
+import TShow from './todo/show';
+import TEdit from './todo/edit';
+import TCreate from './todo/create';
 // import Sidebar from '../common/Sidebar';
 
 const RouterComponent = () =>{
@@ -37,6 +40,10 @@ const RouterComponent = () =>{
             <Route path="/users/show" element={<UShow/>}/>
             <Route path="/users/create" element={<UCreate/>}/>
             <Route path="/users/edit/:id" element={<UEdit/>}/>
+
+            <Route path="/todo/show" element={<TShow/>}/>
+            <Route path="/todo/create" element={<TCreate/>}/>
+            <Route path="/todo/edit/:id" element={<TEdit/>}/>
             
 
 

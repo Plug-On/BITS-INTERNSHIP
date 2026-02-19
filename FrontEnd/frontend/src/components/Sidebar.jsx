@@ -142,7 +142,7 @@ export default function Sidebar() {
           <Link to="../companies/show">Companies</Link>
         </div>
         <div className="font-bold mx-4 mt-3">
-          <Link to="#">Tickets</Link>
+          <Link to="../todo/show">To-Do</Link>
         </div>
         <div className="font-bold mx-4 mt-3">
           <Link to="#">Settings</Link>
