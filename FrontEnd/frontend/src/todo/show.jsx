@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ConfirmModal from "../components/ConfirmModal";
 import { toast } from "react-hot-toast";
+import Filter from "./filter";
+import { FiFilter,FiChevronDown, FiChevronUp } from "react-icons/fi";
 
 const Show = () => {
   const [todos, setTodos] = useState([]);
@@ -12,12 +14,16 @@ const Show = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [priorityFilter, setPriorityFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("newest");
+  const [showFilters, setShowFilters] = useState(false);
+
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/api/todo")
       .then((res) => {
-        const sorted = [...res.data].sort((a, b) => b.id - a.id);
-        setTodos(sorted);
+        setTodos(res.data);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -40,11 +46,37 @@ const Show = () => {
     }
   };
 
-  const filteredTodos = todos.filter((todo) =>
-    `${todo.title} ${todo.description}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  /* ================= FILTER + SEARCH + SORT ================= */
+
+  const filteredTodos = todos
+    .filter((todo) => {
+      const searchMatch =
+        `${todo.title} ${todo.description}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+
+      const priorityMatch =
+        priorityFilter === "all" || todo.priority === priorityFilter;
+
+      const statusMatch =
+        statusFilter === "all" || todo.status === statusFilter;
+
+      return searchMatch && priorityMatch && statusMatch;
+    })
+    .sort((a, b) => {
+      if (sortOrder === "newest") {
+        return b.id - a.id;
+      } else {
+        return a.id - b.id;
+      }
+    });
+
+  const clearFilters = () => {
+    setPriorityFilter("all");
+    setStatusFilter("all");
+    setSearchTerm("");
+    setSortOrder("newest");
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-900">
@@ -56,7 +88,7 @@ const Show = () => {
         <div className="flex items-center justify-between mb-4 relative">
           <h2 className="text-lg font-bold text-white">Todos</h2>
 
-          {/* Search Bar */}
+          {/* Search */}
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1/3">
             <input
               type="text"
@@ -74,6 +106,47 @@ const Show = () => {
           </Link>
         </div>
 
+        {/* Filter + Sort Row */}
+        <div className="flex justify-end items-center gap-4 mb-4 relative">
+
+          {/* LEFT SIDE - Filter Button */}
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded flex items-center gap-2"
+          >
+            <FiFilter size={18} /> Filters
+          </button>
+
+          {/* SORT */}
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white"
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+
+        {/* FILTER DROPDOWN PANEL */}
+        {showFilters && (
+          <div className="mb-4 bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
+            <Filter
+              priorityFilter={priorityFilter}
+              setPriorityFilter={setPriorityFilter}
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+            />
+
+            <button
+              onClick={clearFilters}
+              className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
+
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-100 text-left">
@@ -87,43 +160,33 @@ const Show = () => {
           </thead>
 
           <tbody>
-            {todos?.length > 0 ? (
+            {filteredTodos.length > 0 ? (
               filteredTodos.map((todo, index) => (
                 <React.Fragment key={todo.id}>
-                  {/* MAIN ROW */}
                   <tr className="border-b hover:bg-gray-700">
                     <td className="px-4 py-3 text-sm text-white">{index + 1}</td>
                     <td className="px-4 py-3 text-sm text-white">{todo.title}</td>
 
-                    {/* Priority badge + click to expand */}
                     <td className="px-6 py-3">
-                      <button
-                        onClick={() =>
-                          setExpandedRow(expandedRow === todo.id ? null : todo.id)
-                        }
-                        className="focus:outline-none"
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                          todo.priority === "high"
+                            ? "bg-red-100 text-red-700"
+                            : todo.priority === "medium"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-green-100 text-green-700"
+                        }`}
                       >
-                        <span
-                          className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                            todo.priority === "High"
-                              ? "bg-red-100 text-red-700"
-                              : todo.priority === "Medium"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-green-100 text-green-700"
-                          }`}
-                        >
-                          {todo.priority || "-"}
-                        </span>
-                      </button>
+                        {todo.priority}
+                      </span>
                     </td>
 
-                    {/* Status badge */}
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                          todo.status === "Completed"
+                          todo.status === "completed"
                             ? "bg-green-100 text-green-700"
-                            : todo.status === "In Progress"
+                            : todo.status === "in_progress"
                             ? "bg-yellow-100 text-yellow-700"
                             : "bg-red-100 text-red-700"
                         }`}
@@ -132,25 +195,36 @@ const Show = () => {
                       </span>
                     </td>
 
-                    <td className="px-4 py-3 text-sm text-white">{todo.due_date || "-"}</td>
+                    <td className="px-4 py-3 text-sm text-white">
+                      {todo.due_date || "-"}
+                    </td>
 
                     <td className="px-4 py-3 flex gap-3">
-                      <Link
-                        to={`/todo/edit/${todo.id}`}
-                        className="text-blue-600 font-bold hover:underline"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => openDeleteConfirm(todo.id)}
-                        className="text-red-600 font-bold hover:underline"
-                      >
-                        Delete
-                      </button>
-                    </td>
+                        <Link
+                          to={`/todo/edit/${todo.id}`}
+                          className="text-blue-600 font-bold hover:underline"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => openDeleteConfirm(todo.id)}
+                          className="text-red-600 font-bold hover:underline"
+                        >
+                          Delete
+                        </button>
+
+                        {/* NEW: Expand Description Button */}
+                        <button
+                          onClick={() =>
+                            setExpandedRow(expandedRow === todo.id ? null : todo.id)
+                          }
+                          className="text-gray-400 hover:text-white font-bold"
+                        >
+                          {expandedRow === todo.id ? <FiChevronUp /> : <FiChevronDown />}
+                        </button>
+                      </td>
                   </tr>
 
-                  {/* EXPANDED ROW */}
                   {expandedRow === todo.id && (
                     <tr className="bg-gray-800">
                       <td colSpan="6" className="px-6 py-4 text-sm text-gray-200">

@@ -5,6 +5,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import NotificationBell from "./components/NotificationBell";
+import { FiBriefcase, FiCheckCircle, FiXCircle, FiClock,FiBell, FiPlusCircle,FiUsers,FiLayers, FiGrid,FiFolderPlus,FiUserPlus, FiAlertCircle } from "react-icons/fi";
 
 const Dashboard = () => {
   const [companies, setCompanies] = useState([]);
@@ -98,9 +99,9 @@ const recentActivity = companies
 
 
         <div className="flex justify-between items-center mb-6">
-  <h2 className="text-2xl font-semibold">Dashboard</h2>
-  <NotificationBell companies={companies} />
-</div>
+            <h2 className="text-2xl font-semibold">Dashboard</h2>
+            <NotificationBell companies={companies} />
+        </div>
 
 
 
@@ -108,47 +109,46 @@ const recentActivity = companies
         
          {/* Quick Actions / Links */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-                    <Link
-                      to="/companies/show"
-                      className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
-                    >
-                      View All Companies
-                    </Link>
+                <Link
+                  to="/companies/show"
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-semibold transition flex items-center justify-center gap-2"
+                >
+                  <FiLayers size={20} /> View All Companies
+                </Link>
 
-                    <Link
-                      to="/users/show"
-                      className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
-                    >
-                      View All Users
-                    </Link>
+                <Link
+                  to="/users/show"
+                  className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md font-semibold transition flex items-center justify-center gap-2"
+                >
+                  <FiUsers size={20} /> View All Users
+                </Link>
 
-                    <Link
-                      to="/companies/create"
-                      className="bg-yellow-600 hover:bg-yellow-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
-                    >
-                      Add New Company
-                    </Link>
+                <Link
+                  to="/companies/create"
+                  className="bg-yellow-600 hover:bg-yellow-700 text-white py-3 px-4 rounded-md font-semibold transition flex items-center justify-center gap-2"
+                >
+                  <FiFolderPlus size={20} /> Add New Company
+                </Link>
 
-                    <Link
-                      to="/users/create"
-                      className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-md font-semibold transition text-center"
-                    >
-                      Add New User
-                    </Link>
+                <Link
+                  to="/users/create"
+                  className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-md font-semibold transition flex items-center justify-center gap-2"
+                >
+                  <FiUserPlus size={20} /> Add New User
+                </Link>
               </div>
-
 
 
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <Card title="Total Companies" value={totalCompanies} icon="🏢" />
-          <Card title="Active Companies" value={activeCompanies} icon="🟢" />
-          <Card title="Inactive Companies" value={inactiveCompanies} icon="🔴" />
+          <Card title="Total Companies" value={totalCompanies} icon={<FiLayers size={28} />} />
+          <Card title="Active Companies" value={activeCompanies} icon={<FiCheckCircle size={28} />} />
+          <Card title="Inactive Companies" value={inactiveCompanies} icon={<FiXCircle size={28} />} />
           <Card
             title="Expiring Soon"
             value={expiringHosting.length + expiringDomains.length}
-            icon="⏰"
+            icon={<FiClock size={28} />}
           />
         </div>
 
@@ -231,7 +231,7 @@ const Card = ({ title, value, icon }) => (
 
 const ExpiringTable = ({ title, data, type, remainingDays }) => (
   <div className="bg-gray-800 rounded-lg p-4">
-    <h3 className="text-white font-semibold mb-3">{title}</h3>
+    <h3 className="text-white font-semibold mb-3 flex items-center gap-2"> <FiClock/> {title}</h3>
     <table className="w-full text-left text-gray-300 text-sm">
       <thead>
         <tr>
@@ -305,7 +305,7 @@ const ExpiringTable = ({ title, data, type, remainingDays }) => (
 
 const ExpiredTable = ({ title, data, type }) => (
   <div className="bg-gray-800 rounded-lg p-4">
-    <h3 className="text-red-400 font-semibold mb-3">🚨 {title}</h3>
+    <h3 className="text-red-400 font-semibold mb-3 flex items-center gap-2"><FiAlertCircle/> {title}</h3>
 
     <table className="w-full text-left text-sm text-gray-300">
       <thead>
