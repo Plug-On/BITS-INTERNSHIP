@@ -1,10 +1,12 @@
 import React from "react";
 
-const filter = ({
+const Filter = ({
   priorityFilter,
   setPriorityFilter,
   statusFilter,
   setStatusFilter,
+  sortOrder,
+  setSortOrder,
 }) => {
   return (
     <div className="mb-6 space-y-4">
@@ -51,8 +53,28 @@ const filter = ({
         </div>
       </div>
 
+      {/* ✅ NEW: Sort Section (Same Button Style) */}
+      <div>
+        <p className="text-gray-400 text-sm mb-2">Sort</p>
+        <div className="flex flex-wrap gap-3">
+          {["newest", "oldest"].map((item) => (
+            <button
+              key={item}
+              onClick={() => setSortOrder(item)}
+              className={`px-4 py-1 rounded-full text-sm font-medium transition ${
+                sortOrder === item
+                  ? "bg-purple-600 text-white"
+                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+              }`}
+            >
+              {item.charAt(0).toUpperCase() + item.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 };
 
-export default filter;
+export default Filter;

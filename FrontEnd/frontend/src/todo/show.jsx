@@ -117,15 +117,8 @@ const Show = () => {
             <FiFilter size={18} /> Filters
           </button>
 
-          {/* SORT */}
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-            className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white"
-          >
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-          </select>
+          
+         
         </div>
 
         {/* FILTER DROPDOWN PANEL */}
@@ -136,6 +129,8 @@ const Show = () => {
               setPriorityFilter={setPriorityFilter}
               statusFilter={statusFilter}
               setStatusFilter={setStatusFilter}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
             />
 
             <button
