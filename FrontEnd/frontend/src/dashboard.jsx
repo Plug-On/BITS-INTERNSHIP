@@ -10,6 +10,7 @@ import { FiBriefcase, FiCheckCircle, FiXCircle, FiClock,FiBell, FiPlusCircle,FiU
 const Dashboard = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -22,7 +23,20 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+
+      // Fetch latest todos for Recent Activity section
+      const fetchTodos = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/todo");
+        setTodos(res.data);
+      } catch (err) {
+        console.error("Failed to fetch todos:", err);
+      }
+    };
+
+
     fetchCompanies();
+    fetchTodos();
   }, []);
 
   const totalCompanies = companies.length;
@@ -86,6 +100,14 @@ const recentActivity = companies
 
 
 
+
+const latestTodos = [...todos]
+  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+  .slice(0, 5);
+
+
+
+
   if (loading) return <p className="text-white p-6">Loading dashboard...</p>;
 
   return (
@@ -117,10 +139,10 @@ const recentActivity = companies
                 </Link>
 
                 <Link
-                  to="/users/show"
+                  to="/todo/create"
                   className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md font-semibold transition flex items-center justify-center gap-2"
                 >
-                  <FiUsers size={20} /> View All Users
+                  <FiPlusCircle size={20} /> Add To-Do
                 </Link>
 
                 <Link
@@ -200,17 +222,24 @@ const recentActivity = companies
           </div>
 
           <div className="bg-gray-800 rounded-lg p-4">
-            <h3 className="text-white font-semibold mb-4">Latest changes</h3>
-            <ul className="text-gray-300 space-y-2">
-              {recentActivity.map((act) => (
-                <li key={act.id} className="border-b border-gray-700 pb-1">
-                  <p>
-                    <span className="font-semibold">{act.name}</span> {act.type}
-                  </p>
-                  <p className="text-xs text-gray-400">{act.date}</p>
-                </li>
-              ))}
-            </ul>
+            <h3 className="text-white font-semibold mb-4">Latest Todo</h3>
+                <ul className="text-gray-300 space-y-2">
+                  {latestTodos.length ? (
+                    latestTodos.map((todo) => (
+                      <li key={todo.id} className="border-b border-gray-700 pb-2">
+                        <p className="font-semibold">{todo.title}</p>
+                        <p className="text-sm text-gray-400">
+                          {todo.status} • {todo.priority}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Due: {todo.due_date || "N/A"}
+                        </p>
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No todos available</p>
+                  )}
+                </ul>
           </div>
         </div>
       </div>

@@ -29,7 +29,7 @@ const Create = () => {
     setErrors({});
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/todo", formData);
+      await axios.post("http://localhost:8000/api/todo", formData);
       toast.success("Todo created successfully!");
       navigate("../todo/show");
     } catch (err) {

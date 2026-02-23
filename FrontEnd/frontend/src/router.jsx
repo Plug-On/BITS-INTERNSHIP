@@ -17,6 +17,7 @@ import UCreate from './users/create';
 import TShow from './todo/show';
 import TEdit from './todo/edit';
 import TCreate from './todo/create';
+import TDetail from './todo/detail';
 // import Sidebar from '../common/Sidebar';
 
 const RouterComponent = () =>{
@@ -44,6 +45,8 @@ const RouterComponent = () =>{
             <Route path="/todo/show" element={<TShow/>}/>
             <Route path="/todo/create" element={<TCreate/>}/>
             <Route path="/todo/edit/:id" element={<TEdit/>}/>
+            <Route path="/todo/detail/:id" element={<TDetail/>}/>
+
             
 
 

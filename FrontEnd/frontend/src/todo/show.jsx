@@ -195,6 +195,12 @@ const Show = () => {
                     </td>
 
                     <td className="px-4 py-3 flex gap-3">
+                      <Link
+                          to={`/todo/detail/${todo.id}`}
+                          className="text-green-600 font-bold hover:underline"
+                        >
+                          Detail
+                        </Link>
                         <Link
                           to={`/todo/edit/${todo.id}`}
                           className="text-blue-600 font-bold hover:underline"
