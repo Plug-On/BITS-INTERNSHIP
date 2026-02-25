@@ -7,6 +7,8 @@ import { getCompanies } from "../services/userService";
 import axios from "axios";
 import ConfirmModal from "../components/ConfirmModal";
 import { toast } from "react-hot-toast";
+import Filter from "./filter";
+import { FiFilter } from "react-icons/fi";
 
 const Show = () => {
   const [companies, setCompanies] = useState([]);
@@ -14,9 +16,13 @@ const Show = () => {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [expiryFilter, setExpiryFilter] = useState("all");
+  const [expiryFilter, setExpiryFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [hostingFilter, setHostingFilter] = useState("All");
+  const [sortOption, setSortOption] = useState("newest");
+  const [showFilters, setShowFilters] = useState(false);
 
-
+  
 
   useEffect(() => {
     getCompanies()
@@ -62,24 +68,52 @@ const Show = () => {
 
 
             //Filter logic
-              const filteredCompanies = companies.filter((company) => {
-                const matchesSearch =
-                  `${company.name} ${company.domain} ${company.p_name} ${company.p_phone}`
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
+              const filteredCompanies = companies
+                .filter((company) => {
+                  const matchesSearch =
+                    `${company.name} ${company.domain} ${company.p_name} ${company.p_phone}`
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase());
 
-                const domainExpired = isExpired(company.domain_expiry);
-                const hostingExpired = isExpired(company.hosting_expiry);
+                  const domainExpired = isExpired(company.domain_expiry);
+                  const hostingExpired = isExpired(company.hosting_expiry);
 
-                let matchesExpiry = true;
+                  let matchesExpiry = true;
+                  if (expiryFilter === "domain") matchesExpiry = domainExpired;
+                  if (expiryFilter === "hosting") matchesExpiry = hostingExpired;
+                  if (expiryFilter === "both")
+                    matchesExpiry = domainExpired && hostingExpired;
 
-                if (expiryFilter === "domain") matchesExpiry = domainExpired;
-                if (expiryFilter === "hosting") matchesExpiry = hostingExpired;
-                if (expiryFilter === "both") matchesExpiry = domainExpired && hostingExpired;
+                  let matchesStatus = true;
+                  if (statusFilter !== "All")
+                    matchesStatus = company.status === statusFilter;
 
-                return matchesSearch && matchesExpiry;
-              });
+                  let matchesHosting = true;
+                  if (hostingFilter !== "All")
+                    matchesHosting = company.hosting === hostingFilter;
 
+                  return (
+                    matchesSearch &&
+                    matchesExpiry &&
+                    matchesStatus &&
+                    matchesHosting
+                  );
+                })
+                .sort((a, b) => {
+                  if (sortOption === "newest") return b.id - a.id;
+                  if (sortOption === "oldest") return a.id - b.id;
+                  if (sortOption === "name_asc") return a.name.localeCompare(b.name);
+                  if (sortOption === "name_desc") return b.name.localeCompare(a.name);
+                  return 0;
+                });
+
+
+        const clearFilters = () => {
+          setStatusFilter("All");
+          setHostingFilter("All");
+          setExpiryFilter("All");
+          setSortOption("newest");
+        };
 
 
   return (
@@ -91,48 +125,65 @@ const Show = () => {
         </div>
 
         <div className="flex-1 overflow-auto bg-gray-900 p-6">
+          {/* Header Row */}
           <div className="flex items-center justify-between mb-4 relative">
-  <h2 className="text-lg font-bold text-white">Companies</h2>
+            <h2 className="text-lg font-bold text-white">Companies</h2>
 
-  {/* Search Bar (Center) */}
-  <div className="absolute left-1/2 transform -translate-x-1/2 w-1/3">
-    <input
-      type="text"
-      placeholder="Search company..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="w-full px-4 py-2 rounded-md bg-gray-800 text-white text-sm border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
+            {/* Search Bar (Center) */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1/3">
+              <input
+                type="text"
+                placeholder="Search company..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 rounded-md bg-gray-800 text-white text-sm border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-
-    
-  </div>
-
- 
-
-
-  <Link to="../companies/create">
-    <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
-      + Add Company
-    </button>
-  </Link>
+            <Link to="../companies/create">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
+                + Add Company
+              </button>
+            </Link>
           </div>
 
-            {/* FILTER BAR */}
-          <div className="flex justify-end mb-3">
-             <span className="text-l font-bold px-5 py-2 text-gray-400">Filter:</span>
-            <select
-              value={expiryFilter}
-              onChange={(e) => setExpiryFilter(e.target.value)}
-              className="px-3 py-2 bg-gray-800 text-white text-sm rounded border border-gray-600"
+
+          {/* Filter Button Row */}
+          <div className="flex justify-end items-center mb-4">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded flex items-center gap-2"
             >
-              <option value="all">All</option>
-              <option value="domain">Expired Domain</option>
-              <option value="hosting">Expired Hosting</option>
-              <option value="both">Expired Domain + Hosting</option>
-            </select>
+              <FiFilter size={18} />
+              Filters
+            </button>
           </div>
 
+
+          {/* Collapsible Filter Panel */}
+          {showFilters && (
+            <div className="mb-4 bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
+              <Filter
+                statusFilter={statusFilter}
+                setStatusFilter={setStatusFilter}
+                hostingFilter={hostingFilter}
+                setHostingFilter={setHostingFilter}
+                expiryFilter={expiryFilter}
+                setExpiryFilter={setExpiryFilter}
+                sortOption={sortOption}
+                setSortOption={setSortOption}
+              />
+
+              <button
+                onClick={clearFilters}
+                className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+              >
+                Reset Filters
+              </button>
+            </div>
+          )}
+
+        
 
           <table className="w-full border-collapse">
             <thead>

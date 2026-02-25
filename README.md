@@ -2,7 +2,7 @@
 # Project Tracker
 This is Project Tracker , a project management website with sprinkle of CRM(Customer Relationship Management) and HRM(Human Resource Management)  where you can keep track of your client. It is a web-based project tracker designed to manage companies, users and hosting/domain details efficiently. Built with Laravel (backend), React (frontend) and TailwindCSS (UI).
 
-This is internship project done by Niraj G.C. & Pradip Kr. Jaysawal for their BCA 7th semester.
+This is internship project done by Niraj G.C. & Pradip Kr. Jaysawal for their BCA 7th semester under mentorship of Sudip Parajuli.
 
 ## Technology Used
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
