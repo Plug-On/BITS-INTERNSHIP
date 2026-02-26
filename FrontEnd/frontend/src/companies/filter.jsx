@@ -7,6 +7,8 @@ const Filter = ({
   setHostingFilter,
   expiryFilter,
   setExpiryFilter,
+  expiryDays,
+  setExpiryDays,
   sortOption,
   setSortOption,
 }) => {
@@ -53,7 +55,8 @@ const Filter = ({
         </div>
       </div>
 
-      {/* Expiry Filter */}
+    
+            {/* Expiry Filter */}
       <div>
         <p className="text-gray-400 text-sm mb-2">Filter by Expiry</p>
         <div className="flex flex-wrap gap-3">
@@ -67,7 +70,14 @@ const Filter = ({
           ].map((item) => (
             <button
               key={item.key}
-              onClick={() => setExpiryFilter(item.key)}
+              onClick={() => {
+                setExpiryFilter(item.key);
+
+                // Reset slider if expired is clicked
+                if (!item.key.includes("expiring")) {
+                  setExpiryDays(15);
+                }
+              }}
               className={`px-4 py-1 rounded-full text-sm font-medium transition ${
                 expiryFilter === item.key
                   ? "bg-red-600 text-white"
@@ -78,6 +88,32 @@ const Filter = ({
             </button>
           ))}
         </div>
+
+        {/* Expiring Soon Slider */}
+        {(expiryFilter === "expiring_domain" ||
+          expiryFilter === "expiring_hosting") && (
+          <div className="mt-4 bg-gray-800 p-4 rounded-lg">
+            <p className="text-gray-300 text-sm mb-2">
+              Expiring within <span className="text-red-400 font-semibold">{expiryDays}</span> days
+            </p>
+
+            <input
+              type="range"
+              min="5"
+              max="60"
+              step="5"
+              value={expiryDays}
+              onChange={(e) => setExpiryDays(Number(e.target.value))}
+              className="w-full accent-red-500"
+            />
+
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <span>5d</span>
+              <span>30d</span>
+              <span>60d</span>
+            </div>
+          </div>
+        )}
       </div>
 
           

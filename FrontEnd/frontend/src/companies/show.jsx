@@ -21,6 +21,8 @@ const Show = () => {
   const [hostingFilter, setHostingFilter] = useState("All");
   const [sortOption, setSortOption] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
+  const [expiryDays, setExpiryDays] = useState(15);
+  
 
   
 
@@ -60,6 +62,20 @@ const Show = () => {
   };
 
 
+  const isExpiringSoon = (date) => {
+  if (!date) return false;
+
+  const today = new Date();
+  const expiryDate = new Date(date);
+
+  if (expiryDate < today) return false; // already expired
+
+  const diffTime = expiryDate - today;
+  const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+  return diffDays <= expiryDays;
+};
+
 //   const filteredCompanies = companies.filter((company) =>
 //   `${company.name} ${company.domain} ${company.p_name} ${company.p_phone}`
 //     .toLowerCase()
@@ -80,9 +96,17 @@ const Show = () => {
 
                   let matchesExpiry = true;
                   if (expiryFilter === "domain") matchesExpiry = domainExpired;
+
                   if (expiryFilter === "hosting") matchesExpiry = hostingExpired;
+
                   if (expiryFilter === "both")
                     matchesExpiry = domainExpired && hostingExpired;
+
+                  if (expiryFilter === "expiring_domain")
+                    matchesExpiry = isExpiringSoon(company.domain_expiry);
+
+                  if (expiryFilter === "expiring_hosting")
+                    matchesExpiry = isExpiringSoon(company.hosting_expiry);
 
                   let matchesStatus = true;
                   if (statusFilter !== "All")
@@ -113,6 +137,7 @@ const Show = () => {
           setHostingFilter("All");
           setExpiryFilter("All");
           setSortOption("newest");
+          setExpiryDays(15);
         };
 
 
@@ -170,6 +195,8 @@ const Show = () => {
                 setHostingFilter={setHostingFilter}
                 expiryFilter={expiryFilter}
                 setExpiryFilter={setExpiryFilter}
+                expiryDays={expiryDays}
+                setExpiryDays={setExpiryDays}
                 sortOption={sortOption}
                 setSortOption={setSortOption}
               />
