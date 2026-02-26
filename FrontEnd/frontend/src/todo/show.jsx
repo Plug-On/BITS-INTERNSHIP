@@ -5,7 +5,7 @@ import axios from "axios";
 import ConfirmModal from "../components/ConfirmModal";
 import { toast } from "react-hot-toast";
 import Filter from "./filter";
-import { FiFilter,FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiFilter,FiChevronDown, FiChevronUp, FiCheckSquare } from "react-icons/fi";
 
 const Show = () => {
   const [todos, setTodos] = useState([]);
@@ -86,7 +86,7 @@ const Show = () => {
 
       <div className="flex-1 p-6 overflow-auto">
         <div className="flex items-center justify-between mb-4 relative">
-          <h2 className="text-lg font-bold text-white">Todos</h2>
+          <h2 className=" flex items-center gap-2 text-lg font-bold text-white"> <FiCheckSquare/>Todos</h2>
 
           {/* Search */}
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1/3">

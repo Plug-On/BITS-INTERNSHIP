@@ -8,7 +8,7 @@ import axios from "axios";
 import ConfirmModal from "../components/ConfirmModal";
 import { toast } from "react-hot-toast";
 import Filter from "./filter";
-import { FiFilter } from "react-icons/fi";
+import { FiBriefcase, FiFilter } from "react-icons/fi";
 
 const Show = () => {
   const [companies, setCompanies] = useState([]);
@@ -152,7 +152,7 @@ const Show = () => {
         <div className="flex-1 overflow-auto bg-gray-900 p-6">
           {/* Header Row */}
           <div className="flex items-center justify-between mb-4 relative">
-            <h2 className="text-lg font-bold text-white">Companies</h2>
+            <h2 className="flex items-center gap-2 text-lg font-bold text-white"> <FiBriefcase/>Companies</h2>
 
             {/* Search Bar (Center) */}
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1/3">

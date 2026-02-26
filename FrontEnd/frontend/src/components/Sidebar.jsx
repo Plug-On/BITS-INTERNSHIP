@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ConfirmModal from "../components/ConfirmModal";
+import { FiUsers, FiHome, FiCheckSquare, FiBriefcase } from "react-icons/fi";
 
 export default function Sidebar() {
   const [user, setUser] = useState(null);
@@ -131,24 +132,41 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="px-2 py-3 flex-shrink-0">
-        <div className="font-bold mx-4">
-          <Link to="../dashboard">Dashboard</Link>
-        </div>
-        <div className="font-bold mx-4 mt-3">
-          <Link to="../users/show">Users</Link>
-        </div>
-        <div className="font-bold mx-4 mt-3">
-          <Link to="../companies/show">Companies</Link>
-        </div>
-        <div className="font-bold mx-4 mt-3">
-          <Link to="../todo/show">To-Do</Link>
-        </div>
-        <div className="font-bold mx-4 mt-3">
-          <Link to="#">Settings</Link>
-        </div>
-      </nav>
+      <nav className="px-2 py-3 flex-shrink-0 space-y-3">
 
+            <Link
+              to="../dashboard"
+              className="flex items-center gap-3 px-4 py-2 font-bold rounded-lg text-white hover:bg-gray-800 transition"
+            >
+              <FiHome size={18} />
+              <span>Dashboard</span>
+            </Link>
+
+            <Link
+              to="../users/show"
+              className="flex items-center gap-3 px-4 py-2 font-bold rounded-lg text-white hover:bg-gray-800 transition"
+            >
+              <FiUsers size={18} />
+              <span>Users</span>
+            </Link>
+
+            <Link
+              to="../companies/show"
+              className="flex items-center gap-3 px-4 py-2 font-bold rounded-lg text-white hover:bg-gray-800 transition"
+            >
+              <FiBriefcase size={18} />
+              <span>Companies</span>
+            </Link>
+
+            <Link
+              to="../todo/show"
+              className="flex items-center gap-3 px-4 py-2 font-bold rounded-lg text-white hover:bg-gray-800 transition"
+            >
+              <FiCheckSquare size={18} />
+              <span>To-Do</span>
+            </Link>
+
+          </nav>
       {/* Scrollable sidebar events */}
       <div className="px-4 py-3 flex-1 overflow-y-auto sidebar-scroll">
         <p className="text-sm text-gray-400 uppercase mb-3">Projects</p>

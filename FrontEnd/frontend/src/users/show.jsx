@@ -7,6 +7,7 @@ import { getUsers } from "../services/userService";
 import axios from 'axios';
 import toast from "react-hot-toast";
 import ConfirmModal from "../components/ConfirmModal";
+import { FiUsers } from 'react-icons/fi';
 
 
 const Users = () => {
@@ -54,8 +55,8 @@ const handleDelete = async () => {
         <div className="flex-1 overflow-auto bg-gray-900 p-6">
 
         <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-          Users
+        <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
+          <FiUsers/>Users
         </h2>
 
         <Link to="../users/create">

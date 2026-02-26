@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import NotificationBell from "./components/NotificationBell";
-import { FiBriefcase, FiCheckCircle, FiXCircle, FiClock,FiBell, FiPlusCircle,FiUsers,FiLayers, FiGrid,FiFolderPlus,FiUserPlus, FiAlertCircle } from "react-icons/fi";
+import { FiBriefcase, FiCheckCircle, FiXCircle, FiClock,FiBell, FiPlusCircle,FiUsers,FiLayers, FiGrid,FiFolderPlus,FiUserPlus, FiAlertCircle, FiHome } from "react-icons/fi";
 
 const Dashboard = () => {
   const [companies, setCompanies] = useState([]);
@@ -121,7 +121,7 @@ const latestTodos = [...todos]
 
 
         <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold">Dashboard</h2>
+            <h2 className=" flex items-center gap-2 text-2xl font-semibold"> <FiHome/>Dashboard</h2>
             <NotificationBell companies={companies} />
         </div>
 
@@ -201,15 +201,15 @@ const latestTodos = [...todos]
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-gray-800 rounded-lg p-4">
             <h3 className="text-white font-semibold mb-4">Company Status</h3>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
                   data={chartData}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
-                  cy="50%"
-                  outerRadius={80}
+                  cy="60%"
+                  outerRadius={120}
                   label
                 >
                   {chartData.map((entry, index) => (
