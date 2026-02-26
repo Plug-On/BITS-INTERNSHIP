@@ -144,10 +144,10 @@ const Create = () => {
 
           {/* Documents */}
           <Section title="Documents">
-            <FileInput label="Registration Document" name="registration_document" onChange={handleFileChange} errors={errors} />
-            <FileInput label="PAN Document" name="pan_document" onChange={handleFileChange} errors={errors} />
-            <FileInput label="Letter" name="letter" onChange={handleFileChange} errors={errors} />
-            <FileInput label="Company Logo" name="logo" onChange={handleFileChange} errors={errors} />
+            <FileInput label="Registration Document (pdf,doc,docs)" name="registration_document" onChange={handleFileChange} errors={errors} />
+            <FileInput label="PAN Document (pdf,jpg,png)" name="pan_document" onChange={handleFileChange} errors={errors} />
+            <FileInput label="Letter (pdf,doc,docs)" name="letter" onChange={handleFileChange} errors={errors} />
+            <FileInput label="Company Logo (jpeg,png,jpg,svg)" name="logo" onChange={handleFileChange} errors={errors} />
           </Section>
 
           {/* Personal */}

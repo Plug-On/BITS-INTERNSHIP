@@ -48,8 +48,19 @@ const Dashboard = () => {
   return new Date(dateStr) < new Date();
 };
 
-const expiredHosting = companies.filter(c => isExpired(c.hosting_expiry));
-const expiredDomains = companies.filter(c => isExpired(c.domain_expiry));
+// const expiredHosting = companies.filter(c => isExpired(c.hosting_expiry));
+// const expiredDomains = companies.filter(c => isExpired(c.domain_expiry));
+const expiredHosting = companies
+  .filter(c => isExpired(c.hosting_expiry))
+  .sort((a, b) => new Date(b.hosting_expiry) - new Date(a.hosting_expiry))
+  .slice(0, 5);
+
+const expiredDomains = companies
+  .filter(c => isExpired(c.domain_expiry))
+  .sort((a, b) => new Date(b.domain_expiry) - new Date(a.domain_expiry))
+  .slice(0, 5);
+
+  
 
 
   const today = new Date();
@@ -70,8 +81,17 @@ const expiredDomains = companies.filter(c => isExpired(c.domain_expiry));
   };
 
 
-  const expiringHosting = companies.filter(c => isExpiringSoon(c.hosting_expiry));
-  const expiringDomains = companies.filter(c => isExpiringSoon(c.domain_expiry));
+  // const expiringHosting = companies.filter(c => isExpiringSoon(c.hosting_expiry));
+  // const expiringDomains = companies.filter(c => isExpiringSoon(c.domain_expiry));
+  const expiringHosting = companies
+  .filter(c => isExpiringSoon(c.hosting_expiry))
+  .sort((a, b) => new Date(a.hosting_expiry) - new Date(b.hosting_expiry)) // nearest first
+  .slice(0, 5);
+
+const expiringDomains = companies
+  .filter(c => isExpiringSoon(c.domain_expiry))
+  .sort((a, b) => new Date(a.domain_expiry) - new Date(b.domain_expiry))
+  .slice(0, 5);
 
   // Pie chart data
   const chartData = [
@@ -208,7 +228,7 @@ const latestTodos = [...todos]
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
-                  cy="60%"
+                  cy="50%"
                   outerRadius={120}
                   label
                 >
@@ -329,6 +349,14 @@ const ExpiringTable = ({ title, data, type, remainingDays }) => (
         )}
       </tbody>
     </table>
+        <div className="mt-3 text-right">
+      <Link
+        to="/companies/show"
+        className="text-blue-400 hover:underline text-sm"
+      >
+        View All →
+      </Link>
+    </div>
   </div>
 );
 
@@ -397,6 +425,14 @@ const ExpiredTable = ({ title, data, type }) => (
         )}
       </tbody>
     </table>
+      <div className="mt-3 text-right">
+        <Link
+          to="/companies/show"
+          className="text-blue-400 hover:underline text-sm"
+        >
+          View All →
+        </Link>
+      </div>
   </div>
 );
 

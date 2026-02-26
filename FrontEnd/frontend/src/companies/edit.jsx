@@ -171,7 +171,7 @@ Object.keys(formData).forEach((key) => {
 
           <Section title="Documents">
                 <DocumentCard
-                  label="Registration Document"
+                  label="Registration Document (pdf,doc,docs)"
                   name="registration_document"
                   currentFile={formData.registration_document}
                   onChange={handleFileChange}
@@ -179,7 +179,7 @@ Object.keys(formData).forEach((key) => {
                 />
 
                 <DocumentCard
-                  label="PAN Document"
+                  label="PAN Document (pdf,jpg,png)"
                   name="pan_document"
                   currentFile={formData.pan_document}
                   onChange={handleFileChange}
@@ -187,7 +187,7 @@ Object.keys(formData).forEach((key) => {
                 />
 
                 <DocumentCard
-                  label="Letter"
+                  label="Letter (pdf,doc,docs)"
                   name="letter"
                   currentFile={formData.letter}
                   onChange={handleFileChange}
@@ -195,7 +195,7 @@ Object.keys(formData).forEach((key) => {
                 />
 
                 <DocumentCard
-                  label="Company Logo"
+                  label="Company Logo (jpeg,png,jpg,svg)"
                   name="logo"
                   currentFile={formData.logo}
                   onChange={handleFileChange}
