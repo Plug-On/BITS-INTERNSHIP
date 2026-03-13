@@ -25,11 +25,7 @@ This is internship project done by Niraj G.C. & Pradip Kr. Jaysawal for their BC
 
 2. Users
 
-- Role-based access:
-
 - Admin: Full access to manage users, companies, and settings.
-
-- Company: Can view and manage their own company details.
 
 - User management: Add, edit, view, and delete users.
 
@@ -103,11 +99,7 @@ Each company record includes:
 
 4. Additional Features
 
-- Responsive UI with TailwindCSS.
-
 - React-powered frontend for smooth user experience.
-
-- Role-based authentication.
 
 - CRUD functionality for Users and Companies.
 
